@@ -1,0 +1,51 @@
+.button{
+    border-radius: 15px;
+    background: whitesmoke;
+    border: 2px solid darkseagreen;
+    color: darkseagreen;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.DropDown {
+    margin-left: 10px;
+}
+
+
+.footer {
+    position: fixed;
+    bottom: 0px;
+    display: inline-block;
+    width: 100%;
+    height: 90px;
+    background-color: whitesmoke;
+}
+
+.header {
+    width:100%;
+    line-height: 70px;
+    text-align: center;
+    position: relative;
+    margin:auto;
+    color: darkseagreen ;
+    font-family: Helvetica;
+}
+
+.label {
+    text-align: center;
+    position: relative;
+    margin:auto;
+    color: darkseagreen ;
+    line-height: 90px;
+    margin-left: 15px;
+}
+
+.top-banner {
+    background-color: whitesmoke ;
+    height: 75px;
+}
+
+.page {
+    min-height:100%;
+    position:relative;
+}
