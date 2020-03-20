@@ -7,10 +7,9 @@
     margin-left: 15px;
 }
 
-.DropDown {
+.dropDown {
     margin-left: 10px;
 }
-
 
 .footer {
     position: fixed;
@@ -33,7 +32,6 @@
 
 .label {
     text-align: center;
-    position: relative;
     margin:auto;
     color: darkseagreen ;
     line-height: 90px;
@@ -49,3 +47,13 @@
     min-height:100%;
     position:relative;
 }
+
+.slider {
+    height: 7px;
+    width: 150px;
+    line-height: 88px;
+    margin-left: 20px;
+    outline: none;
+    border-radius: 2px;
+}
+
