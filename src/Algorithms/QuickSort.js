@@ -1,18 +1,14 @@
 /*
 QUICK SORT ALGORITHM.
-- Pick an element as a pivot and partition the given array around the pivot
-- Pivot variations:
-    First element
-    Last element
-    Random element
-    Median element
-- If x is the pivot: put x at its correct spot in the array, put smaller elements
-before x and greater elements after x
+If x is the pivot: put x at its correct spot in the array, put smaller elements
+before x and greater elements after x. Sort left and right sides recursively.
  */
 
 export function quickSort(arr) {
     // base case: if the array has length 0 or 1, return the array.
-    if (arr.length < 2) { return arr; }
+    if (arr.length < 2) {
+        return arr;
+    }
     // recursive case: the pivot is the first element of the array.
     let pivot = arr[0];
     // all the elements lower than the pivot
