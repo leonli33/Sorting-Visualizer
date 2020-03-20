@@ -1,5 +1,8 @@
 /*
 QUICK SORT ALGORITHM.
+- best case: O(nlog(n))
+- worse case: O(n^2)
+- average: O(nlog(n))
 If x is the pivot: put x at its correct spot in the array, put smaller elements
 before x and greater elements after x. Sort left and right sides recursively.
  */
