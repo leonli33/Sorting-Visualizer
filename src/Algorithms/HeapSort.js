@@ -1,5 +1,8 @@
 /*
 HEAP SORT ALGORITHM.
+- best case: O(nlog(n))
+- worst case: O(nlog(n))
+- average: O(nlog(n))
 It's hard to explain. TODO: add this comment later!
  */
 
