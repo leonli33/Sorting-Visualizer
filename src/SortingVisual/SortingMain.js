@@ -1,6 +1,10 @@
 import React, {Component} from 'react'
 import './SortingMain.css';
 import Bar from './Bar'
+import {mergeSort} from '../Algorithms/MergeSort'
+import {insertionSort} from '../Algorithms/InsertionSort'
+import {radixSort} from '../Algorithms/RadixSort'
+import {shellSort} from '../Algorithms/ShellSort'
 // message to Grev: Happy coding! YOU CAN DO IT 
 
 
@@ -66,6 +70,9 @@ export default class SortingMain extends Component {
         this.setState({
             elementsToSort: elements
         });
+        let arr = [1000,2001,10,7,6,3,2,0,8,100,99,30];
+        let newArr = shellSort(arr);
+        console.log(newArr);
     }
 
     updateCurrentAlgo = (event) => {
