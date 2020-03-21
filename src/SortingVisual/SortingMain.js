@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './SortingMain.css';
 import Bar from './Bar'
 // message to Grev: Happy coding! YOU CAN DO IT
+// message to Leon:
 
 
 export default class SortingMain extends Component {
@@ -15,9 +16,9 @@ export default class SortingMain extends Component {
         }
     };
 
-    // returns a random number between 0 and max
+    // returns a random number between 1 and max, inclusive
     getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max + 1));
+        return Math.floor(Math.random() * Math.floor(max) + 1);
     };
 
     // updates width, height, and margin of bars depending on how many there are
@@ -86,7 +87,14 @@ export default class SortingMain extends Component {
         // set the current algo selected
         this.setState({
             currentAlgo: event.target.value
-        })
+        });
+    };
+
+    sortElements = () => {
+        let sortedElements = this.state.elementsToSort.sort(function(a,b) {return a-b});
+        this.setState({
+            elementsToSort: sortedElements
+        });
     };
 
     render() {
@@ -118,7 +126,7 @@ export default class SortingMain extends Component {
                     </select>
                     <label className="label">Number of elements:</label>
                     <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
-                    <button className="button">Visualize Sorting</button>
+                    <button className="button" onClick={this.sortElements}>Visualize Sorting</button>
                     <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <button className="button">Reset</button>
                     <label className="label">Control speed:</label>

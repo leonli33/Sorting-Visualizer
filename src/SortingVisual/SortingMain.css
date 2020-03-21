@@ -1,8 +1,8 @@
 .button {
     border-radius: 8px;
     background: whitesmoke;
-    border: 2px solid lightslategray;
-    color: lightslategray;
+    border: 2px solid darkslategray;
+    color: darkslategray;
     padding: 10px;
     margin-left: 15px;
     font-size: 14px;
@@ -15,13 +15,13 @@
 }
 
 .dropDown {
-    border: 2px solid lightslategray;
+    border: 2px solid darkslategray;
     height: 35px;
     width: 10%;
     margin-left: 10px;
     outline: none;
     font-size: 14px;
-    color: lightslategray;
+    color: darkslategray;
     font-weight: bold;
 }
 
@@ -44,20 +44,20 @@
     line-height: 70px;
     text-align: center;
     position: relative;
-    margin:auto;
-    color: lightslategray;
+    margin: auto;
+    color: darkslategray;
 }
 
 .label {
     text-align: center;
     font-weight: bold;
-    color: lightslategray;
+    color: darkslategray;
     line-height: 90px;
     margin-left: 15px;
 }
 
 .top-banner {
-    background-color: whitesmoke ;
+    background-color: whitesmoke;
     height: 75px;
     margin-bottom: 20px;
 }
@@ -74,7 +74,6 @@
     line-height: 88px;
     margin-left: 20px;
     border-radius: 15px;
-    background: lightslategray;
 }
 
 .bars {
