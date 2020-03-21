@@ -1,11 +1,7 @@
 import React, {Component} from 'react'
 import './SortingMain.css';
 import Bar from './Bar'
-import {mergeSort} from '../Algorithms/MergeSort'
-import {insertionSort} from '../Algorithms/InsertionSort'
-import {radixSort} from '../Algorithms/RadixSort'
-import {shellSort} from '../Algorithms/ShellSort'
-// message to Grev: Happy coding! YOU CAN DO IT 
+// message to Grev: Happy coding! YOU CAN DO IT
 
 
 export default class SortingMain extends Component {
@@ -15,41 +11,42 @@ export default class SortingMain extends Component {
             currentAlgo: "Merge Sort",
             algorithms: [],
             elementsToSort: [],
-            numberOfElements: 55
+            numberOfElements: 50
         }
-    }
+    };
 
     // returns a random number between 0 and max
     getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
-    }
+        return Math.floor(Math.random() * Math.floor(max + 1));
+    };
 
-    // i am trying to update the width and height of bar being displayed based on how many
-    // elements there are. This code is not functional. Feel free to change any of it or delete
-    // it if there is a better way to do it :)
-    componentDidUpdate() {
+    // updates width, height, and margin of bars depending on how many there are
+    componentDidUpdate = () => {
+        // width of screen
+        let numElements = this.state.numberOfElements;
         let totalWidth = window.screen.width;
-        let width = (totalWidth - (this.state.numberOfElements * 16))/this.state.numberOfElements;
-        for(let i = 0; i < this.state.numberOfElements;i++) {
+        // calculate margin between bars
+        let margin = (numElements <= 40) ? 8 : 5;
+        // calculate width of one bar
+        let width = (numElements <= 30) ? 30 : (totalWidth / numElements) - margin - 10;
+        if (numElements > 80) {
+            width = 3;
+        }
+        // update bars
+        for (let i = 0; i < numElements; i++) {
             let element = document.getElementById("Bar-" + i);
             element.style.height = this.state.elementsToSort[i] * 8 + "px";
             element.style.width = width + "px";
+            element.style.margin = margin + "px";
         }
-    }
-
-    handleNumElementChange = (event) => {
-        // set the number of elements in the array to the value on slider
-        this.setState({
-            numberOfElements: event.target.value
-        });
-    }
+    };
 
     componentDidMount() {
         // initialize elements
         let algos = ["Merge Sort", "Quick Sort", "Insertion Sort", "Bubble Sort","Shell Sort",
-                    "Tim Sort","Radix Sort","Tree Sort"];
+                    "Heap Sort","Radix Sort","Bucket Sort"];
         let elements =[];
-        // initialize the array with 30 elements of random values
+        // initialize the array with 50 elements of random values
         for(let i = 0; i < this.state.numberOfElements; i++) {
             let num = this.getRandomInt(50);
             elements.push(num);
@@ -58,7 +55,7 @@ export default class SortingMain extends Component {
             algorithms: algos,
             elementsToSort: elements
         });
-    }
+    };
 
     handleRandomizeClick = () => {
         // randomize elements
@@ -70,17 +67,27 @@ export default class SortingMain extends Component {
         this.setState({
             elementsToSort: elements
         });
-        let arr = [1000,2001,10,7,6,3,2,0,8,100,99,30];
-        let newArr = shellSort(arr);
-        console.log(newArr);
-    }
+    };
+
+    handleNumElementChange = (event) => {
+        // set the number of elements in the array to the value on slider
+        let numElements = event.target.value;
+        let newElementsToSort = [];
+        for (let i = 0; i < numElements; i++) {
+            newElementsToSort.push(this.getRandomInt(50));
+        }
+        this.setState({
+            numberOfElements: numElements,
+            elementsToSort: newElementsToSort
+        });
+    };
 
     updateCurrentAlgo = (event) => {
         // set the current algo selected
         this.setState({
             currentAlgo: event.target.value
         })
-    }
+    };
 
     render() {
         return (
@@ -109,12 +116,13 @@ export default class SortingMain extends Component {
                             </option>
                         ))}
                     </select>
-                    <label className="label">Number of Elements:</label>
-                    <input type="range" min="0" max="100" className="slider" onChange={this.handleNumElementChange}></input>
+                    <label className="label">Number of elements:</label>
+                    <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
                     <button className="button">Visualize Sorting</button>
                     <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <button className="button">Reset</button>
-                    <label className="label">Control speed (implement slider bar here)</label>
+                    <label className="label">Control speed:</label>
+                    <input type="range" min="2" max="100" className="slider"/>
                 </div>
             </div>
         );
