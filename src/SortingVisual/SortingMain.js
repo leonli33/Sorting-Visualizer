@@ -1,8 +1,17 @@
 import React, {Component} from 'react'
 import './SortingMain.css';
-import Bar from './Bar'
+import Bar from './Bar';
+import {bubbleSort} from '../Algorithms/BubbleSort';
+import {bucketSort} from '../Algorithms/BucketSort';
+import {heapSort} from '../Algorithms/HeapSort';
+import {insertionSort} from '../Algorithms/InsertionSort';
+import {mergeSort} from '../Algorithms/MergeSort';
+import {quickSort} from '../Algorithms/QuickSort';
+import {radixSort} from '../Algorithms/RadixSort';
+import {shellSort} from '../Algorithms/ShellSort';
+
 // message to Grev: Happy coding! YOU CAN DO IT
-// message to Leon:
+// message to Leon: You're a QUEEN!
 
 
 export default class SortingMain extends Component {
@@ -58,6 +67,7 @@ export default class SortingMain extends Component {
         });
     };
 
+    // randomizes the values of the bars (elements to be sorted)
     handleRandomizeClick = () => {
         // randomize elements
         let elements = [];
@@ -70,6 +80,7 @@ export default class SortingMain extends Component {
         });
     };
 
+    // changes the number of elements to be sorted
     handleNumElementChange = (event) => {
         // set the number of elements in the array to the value on slider
         let numElements = event.target.value;
@@ -83,6 +94,7 @@ export default class SortingMain extends Component {
         });
     };
 
+    // updates the selected sorting algorithm
     updateCurrentAlgo = (event) => {
         // set the current algo selected
         this.setState({
@@ -90,10 +102,32 @@ export default class SortingMain extends Component {
         });
     };
 
+    // sorts the elements using the current selected algorithm
+    // (NOT ANIMATED)
+    // this is probably not the most efficient way to do it, so please make it better if you know how to!
+    // also heapSort doesn't work, i need to fix that :/
     sortElements = () => {
-        let sortedElements = this.state.elementsToSort.sort(function(a,b) {return a-b});
+        let elements = this.state.elementsToSort;
+        let algo = this.state.currentAlgo;
+        if (algo === "Bubble Sort") {
+            elements = bubbleSort(elements);
+        } else if (algo === "Bucket Sort") {
+            elements = bucketSort(elements);
+        } else if (algo === "Heap Sort") {
+            elements = heapSort(elements);
+        } else if (algo === "Insertion Sort") {
+            elements = insertionSort(elements);
+        } else if (algo === "Merge Sort") {
+            elements = mergeSort(elements);
+        } else if (algo === "Quick Sort") {
+            elements = quickSort(elements);
+        } else if (algo === "Radix Sort") {
+            elements = radixSort(elements);
+        } else if (algo === "Shell Sort") {
+            elements = shellSort(elements);
+        }
         this.setState({
-            elementsToSort: sortedElements
+            elementsToSort: elements
         });
     };
 
