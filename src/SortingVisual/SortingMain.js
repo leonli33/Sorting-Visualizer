@@ -136,7 +136,8 @@ export default class SortingMain extends Component {
         let elements = this.loadArray(50);
         this.setState({
             numberOfElements: 50,
-            elementsToSort: elements
+            elementsToSort: elements,
+            currentAlgo: "Merge Sort"
         });
     };
 
@@ -160,7 +161,8 @@ export default class SortingMain extends Component {
                 </div>
                 <div className="footer">
                     <label className="label">Number of elements:</label>
-                    <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
+                    <input type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
+                           onChange={this.handleNumElementChange}/>
                     <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <label className="label">Sort with: </label>
                     <select className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
