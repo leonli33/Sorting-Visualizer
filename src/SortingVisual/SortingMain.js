@@ -55,12 +55,7 @@ export default class SortingMain extends Component {
         // initialize elements
         let algos = ["Merge Sort", "Quick Sort", "Insertion Sort", "Bubble Sort","Shell Sort",
                     "Heap Sort","Radix Sort","Bucket Sort"];
-        let elements =[];
-        // initialize the array with 50 elements of random values
-        for(let i = 0; i < this.state.numberOfElements; i++) {
-            let num = this.getRandomInt(50);
-            elements.push(num);
-        }
+        let elements = this.loadArray(this.state.numberOfElements);
         this.setState({
             algorithms: algos,
             elementsToSort: elements
@@ -70,14 +65,20 @@ export default class SortingMain extends Component {
     // randomizes the values of the bars (elements to be sorted)
     handleRandomizeClick = () => {
         // randomize elements
-        let elements = [];
-        for(let i = 0; i < this.state.numberOfElements; i++) {
-            let num = this.getRandomInt(50);
-            elements.push(num);
-        }
+        let elements = this.loadArray(this.state.numberOfElements);
         this.setState({
             elementsToSort: elements
         });
+    };
+
+    // initialize values of bars (elements to be sorted) to the given number of random values
+    loadArray = (numBars) => {
+        let elements = [];
+        for(let i = 0; i < numBars; i++) {
+            let num = this.getRandomInt(50);
+            elements.push(num);
+        }
+        return elements;
     };
 
     // changes the number of elements to be sorted
@@ -131,6 +132,14 @@ export default class SortingMain extends Component {
         });
     };
 
+    reset = () => {
+        let elements = this.loadArray(50);
+        this.setState({
+            numberOfElements: 50,
+            elementsToSort: elements
+        });
+    };
+
     render() {
         return (
             <div className="page">
@@ -164,7 +173,7 @@ export default class SortingMain extends Component {
                     <label className="label">Sorting speed:</label>
                     <input type="range" min="1" max="100" className="slider"/>
                     <button className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
-                    <button className="button">Reset</button>
+                    <button className="button" onClick={this.reset}>Reset</button>
                 </div>
             </div>
         );
