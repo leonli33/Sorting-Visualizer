@@ -150,6 +150,9 @@ export default class SortingMain extends Component {
                     })}
                 </div>
                 <div className="footer">
+                    <label className="label">Number of elements:</label>
+                    <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
+                    <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <label className="label">Sort with: </label>
                     <select className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
                         {this.state.algorithms.map(algorithms => (
@@ -158,13 +161,10 @@ export default class SortingMain extends Component {
                             </option>
                         ))}
                     </select>
-                    <label className="label">Number of elements:</label>
-                    <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
-                    <button className="button" onClick={this.sortElements}>Visualize Sorting</button>
-                    <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
+                    <label className="label">Sorting speed:</label>
+                    <input type="range" min="1" max="100" className="slider"/>
+                    <button className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
                     <button className="button">Reset</button>
-                    <label className="label">Control speed:</label>
-                    <input type="range" min="2" max="100" className="slider"/>
                 </div>
             </div>
         );
