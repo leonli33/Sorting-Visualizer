@@ -145,7 +145,7 @@ export default class SortingMain extends Component {
         return (
             <div className="page">
                 <div className="top-banner">
-                    <h1 className="header">Sorting Visualized</h1>
+                    <h1 className="header">Sorting algorithm visualizer</h1>
                 </div>
                 <div className="bars">
                     {this.state.elementsToSort.map((n,index) => {

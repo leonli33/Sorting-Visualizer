@@ -3,14 +3,16 @@ HEAP SORT ALGORITHM.
 - best case: O(nlog(n))
 - worst case: O(nlog(n))
 - average: O(nlog(n))
-It's hard to explain. TODO: add this comment later!
+Create a max heap, swap the first and last elements, "delete" the last element, and then reform the max heap.
+Repeat until there are no more elements to sort.
  */
 
 export function heapSort(arr) {
     // turn the array into a max heap
-    for (let i = (arr.length - 1) / 2; i >= 0; i--) {
-        maxHeap(arr, i, arr.length - 1);
+    for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
+        maxHeap(arr, i, arr.length);
     }
+    console.log(arr);
     // swap first and last element
     // "delete" last element by decrementing the size
     // fix the remaining heap so it is a max heap again
@@ -26,8 +28,8 @@ export function heapSort(arr) {
 // create a max heap
 let maxHeap = (arr, low, high) => {
     // low = index of parent node
-    let leftChild = 2 * low + 1;
-    let rightChild = 2 * low + 2;
+    let leftChild = 2 * low;
+    let rightChild = 2 * low + 1;
 
     // figure out max (the index of the maximum value between the parent and children nodes)
     let max;
