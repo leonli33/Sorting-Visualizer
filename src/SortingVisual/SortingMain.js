@@ -56,12 +56,7 @@ export default class SortingMain extends Component {
         // initialize elements
         let algos = ["Merge Sort", "Quick Sort", "Insertion Sort", "Bubble Sort","Shell Sort",
                     "Heap Sort","Radix Sort","Bucket Sort"];
-        let elements =[];
-        // initialize the array with 50 elements of random values
-        for(let i = 0; i < this.state.numberOfElements; i++) {
-            let num = this.getRandomInt(50);
-            elements.push(num);
-        }
+        let elements = this.loadArray(this.state.numberOfElements);
         this.setState({
             algorithms: algos,
             elementsToSort: elements
@@ -71,14 +66,20 @@ export default class SortingMain extends Component {
     // randomizes the values of the bars (elements to be sorted)
     handleRandomizeClick = () => {
         // randomize elements
-        let elements = [];
-        for(let i = 0; i < this.state.numberOfElements; i++) {
-            let num = this.getRandomInt(50);
-            elements.push(num);
-        }
+        let elements = this.loadArray(this.state.numberOfElements);
         this.setState({
             elementsToSort: elements
         });
+    };
+
+    // initialize values of bars (elements to be sorted) to the given number of random values
+    loadArray = (numBars) => {
+        let elements = [];
+        for(let i = 0; i < numBars; i++) {
+            let num = this.getRandomInt(50);
+            elements.push(num);
+        }
+        return elements;
     };
 
     // changes the number of elements to be sorted
@@ -245,11 +246,20 @@ export default class SortingMain extends Component {
 
     }
 
+    reset = () => {
+        let elements = this.loadArray(50);
+        this.setState({
+            numberOfElements: 50,
+            elementsToSort: elements,
+            currentAlgo: "Merge Sort"
+        });
+    };
+
     render() {
         return (
             <div className="page">
                 <div className="top-banner">
-                    <h1 className="header">Sorting Visualized</h1>
+                    <h1 className="header">Sorting algorithm visualizer</h1>
                 </div>
                 <div className="bars">
                     {this.state.elementsToSort.map((n,index) => {
@@ -264,6 +274,11 @@ export default class SortingMain extends Component {
                     })}
                 </div>
                 <div className="footer">
+                    <label className="label">Number of elements:</label>
+                    <input type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
+                           onChange={this.handleNumElementChange}/>
+                    <label className="minorLabel">{this.state.numberOfElements}</label>
+                    <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <label className="label">Sort with: </label>
                     <select className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
                         {this.state.algorithms.map(algorithms => (
@@ -272,13 +287,10 @@ export default class SortingMain extends Component {
                             </option>
                         ))}
                     </select>
-                    <label className="label">Number of elements:</label>
-                    <input type="range" min="2" max="100" className="slider" onChange={this.handleNumElementChange}/>
-                    <button className="button" onClick={this.sortElements}>Visualize Sorting</button>
-                    <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
-                    <button className="button">Reset</button>
-                    <label className="label">Control speed:</label>
-                    <input type="range" min="2" max="100" className="slider"/>
+                    <label className="label">Sorting speed:</label>
+                    <input type="range" min="1" max="100" className="slider"/>
+                    <button className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
+                    <button className="button" onClick={this.reset}>Reset</button>
                 </div>
             </div>
         );
