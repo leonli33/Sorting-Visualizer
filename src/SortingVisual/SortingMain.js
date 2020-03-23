@@ -144,7 +144,7 @@ export default class SortingMain extends Component {
         for(let i = 0; i <= length; i++) {
             if(i === length) {
                 setTimeout(() => {
-                    this.enableElements()
+                    this.animationDone();
                 }, time * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
@@ -152,7 +152,7 @@ export default class SortingMain extends Component {
                     let mergeIndex = 0;
                     for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
                         let mergedArray = currentAnimation.mergedarray;
-                        this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed)
+                        this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed,i)
                         mergeIndex++;
                         time++
                     }
@@ -178,11 +178,20 @@ export default class SortingMain extends Component {
         }
     }
 
-    animateMerging(time,index,height,currentSpeed) {
-        setTimeout(()=> {
-            document.getElementById("Bar-" + index).classList.remove("comparedElement");
-            document.getElementById("Bar-" + index).style.height = height * 8 + "px";
-        }, time * currentSpeed);
+    animateMerging(time,index,height,currentSpeed,indexInLoop) {
+        if(indexInLoop % 2 == 0) {
+            setTimeout(()=> {
+                document.getElementById("Bar-" + index).classList.add("comparedElement");
+            }, time * currentSpeed);
+        } else {
+            setTimeout(()=> {
+                document.getElementById("Bar-" + index).classList.remove("comparedElement");
+                document.getElementById("Bar-" + index).style.height = height * 8 + "px";
+            }, time * currentSpeed);
+        }
+
+        //document.getElementById("Bar-" + index).style.height = height * 8 + "px";
+        
     }
 
     animateRadixSort(animations,currentSpeed) {
@@ -191,7 +200,7 @@ export default class SortingMain extends Component {
         for(let i = 0; i <= length; i++) {
             if(i === length) {
                 setTimeout(() => {
-                    this.enableElements()
+                    this.animationDone();
                 }, i * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
@@ -215,13 +224,12 @@ export default class SortingMain extends Component {
         }
     }
 
-    // shell sort does not work yet
     animateShellSort(animations,currentSpeed) {
         let length = animations.length;
         for(let i = 0;i <= length; i++) {
             if(i === length) {
                 setTimeout(() => {
-                    this.enableElements()
+                    this.animationDone();
                 }, i * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
@@ -235,7 +243,6 @@ export default class SortingMain extends Component {
                         document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
-                        document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
                     }, i * currentSpeed)
                 }    
             }
@@ -247,7 +254,7 @@ export default class SortingMain extends Component {
         for(let i = 0; i <= length; i++) {
             if(i === length) {
                 setTimeout(() => {
-                    this.enableElements()
+                    this.animationDone()
                 }, i * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
@@ -305,6 +312,23 @@ export default class SortingMain extends Component {
 
         });
     };
+
+    animationDone() {
+        for(let i = 0; i <= this.state.numberOfElements; i++) {
+            if(i < this.state.numberOfElements) {
+                setTimeout(() => {
+                    document.getElementById("Bar-" + i).classList.add("doneElement");
+                },i * this.state.currentSpeed);
+            } else {
+                setTimeout(() => {
+                    for(let j = 0; j < this.state.numberOfElements; j++) {
+                        document.getElementById("Bar-" + j).classList.remove("doneElement");
+                    }
+                    this.enableElements();
+                },(i * this.state.currentSpeed) + 1000);
+            }
+        }
+    }
 
     // disable all elements for user interaction
     disableElements() {

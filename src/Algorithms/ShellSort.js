@@ -1,4 +1,4 @@
-// shell sort is an extended version of insertion sort, where a particulat
+// shell sort is an extended version of insertion sort, where a particular
 // element in an array is not being compared to the elements next to it but a certain
 // gap distance away
 
@@ -43,7 +43,7 @@ export function shellSort(arr) {
             }
 
             
-            if(!swapped) {
+           // if(!swapped) {
                 let comparedElements = {
                     firstElement: last,
                     secondElement: i,
@@ -52,10 +52,7 @@ export function shellSort(arr) {
                 }
                 animations.push(comparedElements);
                 animations.push(comparedElements);
-            }
-            
-            
-
+          //  }
             arr[last] = temp;
         }
         // gap is cut in half each time (eventually becoming insertion sort when it is 1)
