@@ -6,6 +6,8 @@ export function radixSort(arr) {
     // get the maximum number of digits
     let maxNum = getMax(arr);
 
+    let positions = [];
+
     // for every digit:
     // note: Radix sort works because the elements in the original array are changing every 
     //       iteration. This, combined with the fact that counting sort is stable, results in the correct
@@ -19,13 +21,25 @@ export function radixSort(arr) {
             // get the digit at the ith place in every element
             let position = getPosition(arr[ j ], i);
             // push the element into the correct spot in the 10 arrays stored in bucket
-            buckets[position].push(arr[ j ]);
+            buckets[position].push(arr[j]);
+        }
+
+        let count = 0;
+        for(let j = 0; j < 10; j++) {
+            for(let z = 0; z < buckets[j].length; z++) {
+                let newPosition = {
+                    height: buckets[j][z],
+                    index: count
+                }
+                count++;
+                positions.push(newPosition);
+            }
         }
 
         // set array equal to the non empty elements in buckets in the order they appear
         arr = [].concat(...buckets);
     }
-    return arr
+    return positions;
 }
 
 // get the maximum number of digits in a number

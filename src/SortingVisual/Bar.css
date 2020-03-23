@@ -9,3 +9,12 @@
     font-size: 10px;
     color: lightslategray;
 }
+
+.currentElement {
+    background-color: lightgreen;
+}
+
+.comparedElement {
+    background-color: lightcoral;
+}
+

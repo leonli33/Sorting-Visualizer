@@ -12,6 +12,7 @@ import {shellSort} from '../Algorithms/ShellSort';
 
 // message to Grev: Happy coding! YOU CAN DO IT
 // message to Leon: You're a QUEEN!
+// message to Grev: NO! I am a princess :)
 
 
 export default class SortingMain extends Component {
@@ -116,20 +117,133 @@ export default class SortingMain extends Component {
         } else if (algo === "Heap Sort") {
             elements = heapSort(elements);
         } else if (algo === "Insertion Sort") {
-            elements = insertionSort(elements);
+            this.animateInsertionSort(insertionSort(elements));
+            //elements = insertionSort(elements);
         } else if (algo === "Merge Sort") {
-            elements = mergeSort(elements);
+            this.animateMergeSort(mergeSort(elements));
+           // elements = mergeSort(elements);
+           // this.animateMergeSort();
         } else if (algo === "Quick Sort") {
             elements = quickSort(elements);
         } else if (algo === "Radix Sort") {
-            elements = radixSort(elements);
+            this.animateRadixSort(radixSort(elements));
+         //   elements = radixSort(elements);
         } else if (algo === "Shell Sort") {
-            elements = shellSort(elements);
+            this.animateShellSort(shellSort(elements));
+           // elements = shellSort(elements);
         }
+        /*
         this.setState({
             elementsToSort: elements
         });
+        */
+        
     };
+
+    animateMergeSort(animations) {
+        let length = animations.length;
+        let time = 0;
+        for(let i = 0; i < length; i++) {
+            let currentAnimation = animations[i];
+            if(currentAnimation.end) {
+                let mergeIndex = 0;
+                for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
+                    let mergedArray = currentAnimation.mergedarray;
+                    this.animateMerging(time,j,mergedArray[mergeIndex])
+                    //    document.getElementById("Bar-" + j).style.height = mergedArray[mergeIndex] * 8 + "px";
+                    mergeIndex++;
+                    time++
+                }
+            } else {
+                this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1);
+            }
+            time++;
+        }
+
+    }
+
+    animateComparison(time, indexStart,indexEnd) {
+        console.log(indexStart+"," + indexEnd)
+        setTimeout(()=> {
+            document.getElementById("Bar-" + indexStart).classList.add("comparedElement");
+            document.getElementById("Bar-" + indexEnd).classList.add("comparedElement");
+        }, time * 15);
+        setTimeout(()=> {
+            document.getElementById("Bar-" + indexStart).classList.remove("comparedElement");
+            document.getElementById("Bar-" + indexEnd).classList.remove("comparedElement");
+        }, (time * 15) + 20);
+    }
+
+    animateMerging(time,index,height) {
+        setTimeout(()=> {
+            document.getElementById("Bar-" + index).style.height = height * 8 + "px";
+        }, time * 15);
+    }
+
+    animateRadixSort(animations) {
+        console.log(animations);
+        let length = animations.length;
+        let currentArrayIndex = -1;
+        for(let i = 0; i < length; i++) {
+            let currentAnimation = animations[i];
+            currentArrayIndex++;
+            if(currentArrayIndex === this.state.numberOfElements) {
+                currentArrayIndex = 0;
+            }
+            
+            setTimeout(()=> {
+                console.log(currentArrayIndex);
+                document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
+            }, i * 10);
+            setTimeout(()=> {
+                document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
+                document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
+            }, (i * 10) + 50)
+
+            currentArrayIndex = currentArrayIndex + 1;    
+        }
+    }
+
+    animateShellSort(animations) {
+        let length = animations.length;
+        for(let i = 0;i < length; i++) {
+            let currentAnimation = animations[i];
+            setTimeout(() => {
+                document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+              //  document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+            }, i * 10)
+
+            setTimeout(() => {
+                document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
+            }, (i * 10) + 20)
+        }
+    }
+
+    animateInsertionSort(animations) {
+        let length = animations.length;
+        for(let i = 0; i < length; i++) {
+            let currentAnimation = animations[i];
+            setTimeout(() => {
+                document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+                document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+            }, i * 10)
+            if(!currentAnimation.swap) {
+                setTimeout(() => {
+                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                }, (i * 10) + 50)
+            } else {
+                setTimeout(() => {
+                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
+                    document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
+                }, (i * 10) + 50)
+            }
+        }
+
+    }
 
     render() {
         return (
