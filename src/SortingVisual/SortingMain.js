@@ -163,6 +163,7 @@ export default class SortingMain extends Component {
                     <label className="label">Number of elements:</label>
                     <input type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
                            onChange={this.handleNumElementChange}/>
+                    <label className="minorLabel">{this.state.numberOfElements}</label>
                     <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <label className="label">Sort with: </label>
                     <select className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
