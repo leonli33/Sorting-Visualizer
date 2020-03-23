@@ -7,14 +7,17 @@
     margin: 5px;
     font-family: "Helvetica Neue", sans-serif;
     font-size: 10px;
-    color: lightslategray;
+    color: lavender;
 }
 
 .currentElement {
     background-color: lightgreen;
+    color: lightgreen;
 }
 
 .comparedElement {
     background-color: lightcoral;
+    color:lightcoral
+
 }
 

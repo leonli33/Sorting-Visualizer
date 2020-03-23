@@ -24,23 +24,37 @@ export function shellSort(arr) {
             // refers to the index of element swapped
             let last = i;
 
+            let swapped = false
+
             // if the element to the left of j that is gap distance away is greater than the current element
             for(let j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                swapped = true;
                 let comparedElements = {
                     firstElement: j,
+                    secondElement: j-gap,
                     secondElementHeight: arr[j - gap],
+                    firstElementHeight: arr[j]
                 }
+                animations.push(comparedElements);
                 animations.push(comparedElements);
                 // swap the elements
                 arr[j] = arr[j - gap];
                 last -= gap;
             }
+
             
-            let comparedElements = {
-                firstElement: last,
-                secondElementHeight: temp
+            if(!swapped) {
+                let comparedElements = {
+                    firstElement: last,
+                    secondElement: i,
+                    secondElementHeight: temp,
+                    firstElementHeight: arr[last]
+                }
+                animations.push(comparedElements);
+                animations.push(comparedElements);
             }
-            animations.push(comparedElements);
+            
+            
 
             arr[last] = temp;
         }

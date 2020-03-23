@@ -14,6 +14,17 @@
     background: lavender;
 }
 
+.dropDownSpeed {
+    border: 2px solid darkslategray;
+    height: 42px;
+    width: 7%;
+    margin-left: 10px;
+    outline: none;
+    font-size: 14px;
+    color: darkslategray;
+    font-weight: bold;
+}
+
 .dropDown {
     border: 2px solid darkslategray;
     height: 42px;

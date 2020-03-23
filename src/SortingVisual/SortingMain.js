@@ -14,7 +14,6 @@ import {shellSort} from '../Algorithms/ShellSort';
 // message to Leon: You're a QUEEN!
 // message to Grev: NO! I am a princess :)
 
-
 export default class SortingMain extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +21,10 @@ export default class SortingMain extends Component {
             currentAlgo: "Merge Sort",
             algorithms: [],
             elementsToSort: [],
-            numberOfElements: 50
+            numberOfElements: 50,
+            sortSpeed: ["Slow","Regular","Fast"],
+            sortSpeedSelected: "Regular",
+            currentSpeed: 15
         }
     };
 
@@ -109,6 +111,7 @@ export default class SortingMain extends Component {
     // this is probably not the most efficient way to do it, so please make it better if you know how to!
     // also heapSort doesn't work, i need to fix that :/
     sortElements = () => {
+        let currentSpeed = this.state.currentSpeed;
         let elements = this.state.elementsToSort;
         let algo = this.state.currentAlgo;
         if (algo === "Bubble Sort") {
@@ -118,30 +121,19 @@ export default class SortingMain extends Component {
         } else if (algo === "Heap Sort") {
             elements = heapSort(elements);
         } else if (algo === "Insertion Sort") {
-            this.animateInsertionSort(insertionSort(elements));
-            //elements = insertionSort(elements);
+            this.animateInsertionSort(insertionSort(elements),currentSpeed);
         } else if (algo === "Merge Sort") {
-            this.animateMergeSort(mergeSort(elements));
-           // elements = mergeSort(elements);
-           // this.animateMergeSort();
+            this.animateMergeSort(mergeSort(elements),currentSpeed);
         } else if (algo === "Quick Sort") {
             elements = quickSort(elements);
         } else if (algo === "Radix Sort") {
-            this.animateRadixSort(radixSort(elements));
-         //   elements = radixSort(elements);
+            this.animateRadixSort(radixSort(elements),currentSpeed);
         } else if (algo === "Shell Sort") {
-            this.animateShellSort(shellSort(elements));
-           // elements = shellSort(elements);
+            this.animateShellSort(shellSort(elements),currentSpeed);
         }
-        /*
-        this.setState({
-            elementsToSort: elements
-        });
-        */
-        
     };
 
-    animateMergeSort(animations) {
+    animateMergeSort(animations,currentSpeed) {
         let length = animations.length;
         let time = 0;
         for(let i = 0; i < length; i++) {
@@ -150,39 +142,39 @@ export default class SortingMain extends Component {
                 let mergeIndex = 0;
                 for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
                     let mergedArray = currentAnimation.mergedarray;
-                    this.animateMerging(time,j,mergedArray[mergeIndex])
-                    //    document.getElementById("Bar-" + j).style.height = mergedArray[mergeIndex] * 8 + "px";
+                    this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed)
                     mergeIndex++;
                     time++
                 }
             } else {
-                this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1);
+                this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1, i,currentSpeed);
             }
             time++;
         }
-
     }
 
-    animateComparison(time, indexStart,indexEnd) {
-        console.log(indexStart+"," + indexEnd)
-        setTimeout(()=> {
-            document.getElementById("Bar-" + indexStart).classList.add("comparedElement");
-            document.getElementById("Bar-" + indexEnd).classList.add("comparedElement");
-        }, time * 15);
-        setTimeout(()=> {
-            document.getElementById("Bar-" + indexStart).classList.remove("comparedElement");
-            document.getElementById("Bar-" + indexEnd).classList.remove("comparedElement");
-        }, (time * 15) + 20);
+    animateComparison(time, indexStart,indexEnd, indexInLoop,currentSpeed) {
+        if(indexInLoop % 2 === 0) {
+            setTimeout(()=> {
+                document.getElementById("Bar-" + indexStart).classList.add("comparedElement");
+                document.getElementById("Bar-" + indexEnd).classList.add("comparedElement");
+            }, time * currentSpeed);
+        } else {
+            setTimeout(()=> {
+                document.getElementById("Bar-" + indexStart).classList.remove("comparedElement");
+                document.getElementById("Bar-" + indexEnd).classList.remove("comparedElement");
+            }, time * currentSpeed);
+        }
     }
 
-    animateMerging(time,index,height) {
+    animateMerging(time,index,height,currentSpeed) {
         setTimeout(()=> {
+            document.getElementById("Bar-" + index).classList.remove("comparedElement");
             document.getElementById("Bar-" + index).style.height = height * 8 + "px";
-        }, time * 15);
+        }, time * currentSpeed);
     }
 
-    animateRadixSort(animations) {
-        console.log(animations);
+    animateRadixSort(animations,currentSpeed) {
         let length = animations.length;
         let currentArrayIndex = -1;
         for(let i = 0; i < length; i++) {
@@ -191,59 +183,84 @@ export default class SortingMain extends Component {
             if(currentArrayIndex === this.state.numberOfElements) {
                 currentArrayIndex = 0;
             }
-            
-            setTimeout(()=> {
-                console.log(currentArrayIndex);
-                document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
-            }, i * 10);
-            setTimeout(()=> {
-                document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
-                document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
-            }, (i * 10) + 50)
-
+            if(i % 2 === 0) {
+                setTimeout(()=> {
+                    console.log(currentArrayIndex);
+                    document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
+                }, i * currentSpeed);
+            } else {
+                setTimeout(()=> {
+                    document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
+                }, i * currentSpeed)
+            }
             currentArrayIndex = currentArrayIndex + 1;    
         }
     }
 
-    animateShellSort(animations) {
+    // shell sort does not work yet
+    animateShellSort(animations,currentSpeed) {
         let length = animations.length;
         for(let i = 0;i < length; i++) {
             let currentAnimation = animations[i];
-            setTimeout(() => {
-                document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
-              //  document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
-            }, i * 10)
-
-            setTimeout(() => {
-                document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
-                document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
-            }, (i * 10) + 20)
-        }
-    }
-
-    animateInsertionSort(animations) {
-        let length = animations.length;
-        for(let i = 0; i < length; i++) {
-            let currentAnimation = animations[i];
-            setTimeout(() => {
-                document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
-                document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
-            }, i * 10)
-            if(!currentAnimation.swap) {
+            if(i % 2 == 0) {
                 setTimeout(() => {
-                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
-                }, (i * 10) + 50)
+                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+                }, i * currentSpeed)
             } else {
                 setTimeout(() => {
                     document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                     document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
                     document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
                     document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
-                }, (i * 10) + 50)
+                }, i * currentSpeed)
+            }    
+        }
+    }
+
+    animateInsertionSort(animations,currentSpeed) {
+        let length = animations.length;
+        for(let i = 0; i < length; i++) {
+            let currentAnimation = animations[i];
+            if(i % 2 === 0) {
+                setTimeout(() => {
+                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+                }, i * currentSpeed);
+            } 
+            else {
+                if(!currentAnimation.swap) {
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                    }, (i * currentSpeed))
+                } else {
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
+                        document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
+                    }, (i * currentSpeed))
+                }
             }
         }
+    }
 
+    updateSortSpeed = (event) => {
+        // fast = 5, medium = 15, slow = 100
+        let speed;
+        if(event.target.value === "Slow") {
+            speed = 100;
+        } else if(event.target.value === "Regular") {
+            speed = 15;
+        } else {
+            speed = 5;
+        }
+        this.setState({
+            sortSpeedSelected: event.target.value,
+            currentSpeed: speed
+        });
     }
 
     reset = () => {
@@ -251,7 +268,10 @@ export default class SortingMain extends Component {
         this.setState({
             numberOfElements: 50,
             elementsToSort: elements,
-            currentAlgo: "Merge Sort"
+            currentAlgo: "Merge Sort",
+            sortSpeedSelected: "Regular",
+            currentSpeed: 15
+
         });
     };
 
@@ -288,7 +308,13 @@ export default class SortingMain extends Component {
                         ))}
                     </select>
                     <label className="label">Sorting speed:</label>
-                    <input type="range" min="1" max="100" className="slider"/>
+                    <select className="dropDownSpeed" value={this.state.sortSpeedSelected} onChange={this.updateSortSpeed}>
+                        {this.state.sortSpeed.map(element => (
+                            <option key={element} value={element}>
+                                {element}
+                            </option>
+                        ))}
+                    </select>
                     <button className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
                     <button className="button" onClick={this.reset}>Reset</button>
                 </div>

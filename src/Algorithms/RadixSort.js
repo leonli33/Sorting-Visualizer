@@ -18,8 +18,14 @@ export function radixSort(arr) {
 
         // for every number in the array:
         for (let j = 0; j < arr.length; j++) {
+            let newPosition = {
+                height: arr[j],
+                index: j
+            }
+            positions.push(newPosition);
+            positions.push(newPosition);
             // get the digit at the ith place in every element
-            let position = getPosition(arr[ j ], i);
+            let position = getPosition(arr[j], i);
             // push the element into the correct spot in the 10 arrays stored in bucket
             buckets[position].push(arr[j]);
         }
@@ -32,6 +38,7 @@ export function radixSort(arr) {
                     index: count
                 }
                 count++;
+                positions.push(newPosition);
                 positions.push(newPosition);
             }
         }

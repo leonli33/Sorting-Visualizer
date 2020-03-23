@@ -5,7 +5,6 @@
 
 // non recursive implementation
 export function mergeSort(arr) {
-    let arrayCopy = [...arr];
     let animations = mergesort(arr);
     return animations;
 }
@@ -39,15 +38,13 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
 
     // add the smallest element in both arrays to the end of 'mergedArray'
     // this guarantees that mergedArray is sorted
-
-    // this doesnt work because the subArrays are not being edited. Need to cut elements off of the arrays,
-    // should be okay since integers are prim types
     while(subArrayOne.length !== 0 && subArrayTwo.length !== 0) {
         let objectsCompared = {
             indexOne : indexCompareOne,
             indexTwo : indexCompareTwo,
             end: false
         }
+        animations.push(objectsCompared);
         animations.push(objectsCompared);
         if(subArrayOne[0] > subArrayTwo[0]) {
             mergedArray.push(subArrayTwo[0]);
@@ -72,6 +69,7 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
             end:false
         }
         animations.push(objectsCompared);
+        animations.push(objectsCompared);
     }
     while(subArrayTwo.length !== 0) {
         mergedArray.push(subArrayTwo[0]);
@@ -83,6 +81,7 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
             end:false
         }
         animations.push(objectsCompared);    
+        animations.push(objectsCompared); 
     }
     console.log(indexCompareOne + "," +  indexCompareTwo)
     let objectsCompared = {
@@ -91,6 +90,7 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
         end: true,
         mergedarray: mergedArray
     }
+    animations.push(objectsCompared);
     animations.push(objectsCompared);
     let z = 0;
     for(let i = startIndexLeft; i < endIndexRight + 1; i++) {
