@@ -25,6 +25,10 @@
     font-weight: bold;
 }
 
+.dropDownSpeed:hover {
+    background: lavender;
+}
+
 .dropDown {
     border: 2px solid darkslategray;
     height: 42px;

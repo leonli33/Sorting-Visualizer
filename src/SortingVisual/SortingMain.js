@@ -14,6 +14,9 @@ import {shellSort} from '../Algorithms/ShellSort';
 // message to Leon: You're a QUEEN!
 // message to Grev: NO! I am a princess :)
 
+// I was trying to implement this in this.state but 
+let gridClear = true;
+
 export default class SortingMain extends Component {
     constructor(props) {
         super(props);
@@ -111,9 +114,11 @@ export default class SortingMain extends Component {
     // this is probably not the most efficient way to do it, so please make it better if you know how to!
     // also heapSort doesn't work, i need to fix that :/
     sortElements = () => {
+        gridClear = false;
         let currentSpeed = this.state.currentSpeed;
         let elements = this.state.elementsToSort;
         let algo = this.state.currentAlgo;
+        this.disableElements();
         if (algo === "Bubble Sort") {
             elements = bubbleSort(elements);
         } else if (algo === "Bucket Sort") {
@@ -136,20 +141,26 @@ export default class SortingMain extends Component {
     animateMergeSort(animations,currentSpeed) {
         let length = animations.length;
         let time = 0;
-        for(let i = 0; i < length; i++) {
-            let currentAnimation = animations[i];
-            if(currentAnimation.end) {
-                let mergeIndex = 0;
-                for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
-                    let mergedArray = currentAnimation.mergedarray;
-                    this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed)
-                    mergeIndex++;
-                    time++
-                }
+        for(let i = 0; i <= length; i++) {
+            if(i === length) {
+                setTimeout(() => {
+                    this.enableElements()
+                }, time * currentSpeed)
             } else {
-                this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1, i,currentSpeed);
+                let currentAnimation = animations[i];
+                if(currentAnimation.end) {
+                    let mergeIndex = 0;
+                    for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
+                        let mergedArray = currentAnimation.mergedarray;
+                        this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed)
+                        mergeIndex++;
+                        time++
+                    }
+                } else {
+                    this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1, i,currentSpeed);
+                }
+                time++;
             }
-            time++;
         }
     }
 
@@ -177,73 +188,92 @@ export default class SortingMain extends Component {
     animateRadixSort(animations,currentSpeed) {
         let length = animations.length;
         let currentArrayIndex = -1;
-        for(let i = 0; i < length; i++) {
-            let currentAnimation = animations[i];
-            currentArrayIndex++;
-            if(currentArrayIndex === this.state.numberOfElements) {
-                currentArrayIndex = 0;
-            }
-            if(i % 2 === 0) {
-                setTimeout(()=> {
-                    console.log(currentArrayIndex);
-                    document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
-                }, i * currentSpeed);
-            } else {
-                setTimeout(()=> {
-                    document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
+        for(let i = 0; i <= length; i++) {
+            if(i === length) {
+                setTimeout(() => {
+                    this.enableElements()
                 }, i * currentSpeed)
+            } else {
+                let currentAnimation = animations[i];
+                currentArrayIndex++;
+                if(currentArrayIndex === this.state.numberOfElements) {
+                    currentArrayIndex = 0;
+                }
+                if(i % 2 === 0) {
+                    setTimeout(()=> {
+                        console.log(currentArrayIndex);
+                        document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
+                    }, i * currentSpeed);
+                } else {
+                    setTimeout(()=> {
+                        document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
+                    }, i * currentSpeed)
+                }
+                currentArrayIndex = currentArrayIndex + 1;    
             }
-            currentArrayIndex = currentArrayIndex + 1;    
         }
     }
 
     // shell sort does not work yet
     animateShellSort(animations,currentSpeed) {
         let length = animations.length;
-        for(let i = 0;i < length; i++) {
-            let currentAnimation = animations[i];
-            if(i % 2 == 0) {
+        for(let i = 0;i <= length; i++) {
+            if(i === length) {
                 setTimeout(() => {
-                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+                    this.enableElements()
                 }, i * currentSpeed)
             } else {
-                setTimeout(() => {
-                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
-                    document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
-                }, i * currentSpeed)
-            }    
-        }
-    }
-
-    animateInsertionSort(animations,currentSpeed) {
-        let length = animations.length;
-        for(let i = 0; i < length; i++) {
-            let currentAnimation = animations[i];
-            if(i % 2 === 0) {
-                setTimeout(() => {
-                    document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
-                    document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
-                }, i * currentSpeed);
-            } 
-            else {
-                if(!currentAnimation.swap) {
+                let currentAnimation = animations[i];
+                if(i % 2 == 0) {
                     setTimeout(() => {
-                        document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
-                        document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
-                    }, (i * currentSpeed))
+                        document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+                    }, i * currentSpeed)
                 } else {
                     setTimeout(() => {
                         document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
                         document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
-                    }, (i * currentSpeed))
+                    }, i * currentSpeed)
+                }    
+            }
+        }
+    }
+
+    animateInsertionSort(animations,currentSpeed) {
+        let length = animations.length;
+        for(let i = 0; i <= length; i++) {
+            if(i === length) {
+                setTimeout(() => {
+                    this.enableElements()
+                }, i * currentSpeed)
+            } else {
+                let currentAnimation = animations[i];
+                if(i % 2 === 0) {
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
+                        document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
+                    }, i * currentSpeed);
+                } 
+                else {
+                    if(!currentAnimation.swap) {
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                        }, (i * currentSpeed))
+                    } else {
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + currentAnimation.firstElement).style.height = currentAnimation.secondElementHeight * 8 + "px";
+                            document.getElementById("Bar-" + currentAnimation.secondElement).style.height = currentAnimation.firstElementHeight * 8 + "px";
+                        }, (i * currentSpeed))
+                    }
                 }
             }
+            
         }
     }
 
@@ -265,6 +295,7 @@ export default class SortingMain extends Component {
 
     reset = () => {
         let elements = this.loadArray(50);
+        gridClear = true;
         this.setState({
             numberOfElements: 50,
             elementsToSort: elements,
@@ -274,6 +305,29 @@ export default class SortingMain extends Component {
 
         });
     };
+
+    // disable all elements for user interaction
+    disableElements() {
+        document.getElementById(`sliderNumElements`).setAttribute("disabled","disabled");
+        document.getElementById(`buttonRandomize`).setAttribute("disabled","disabled");
+        document.getElementById(`sliderAlgo`).setAttribute("disabled","disabled");
+        document.getElementById(`sliderAlgoSpeed`).setAttribute("disabled","disabled");
+        document.getElementById(`buttonVisualize`).setAttribute("disabled","disabled");
+        document.getElementById(`buttonReset`).setAttribute("disabled","disabled");
+    }
+
+    // enable all elements for user interaction
+    enableElements() {
+        console.log("called!")
+        document.getElementById(`sliderNumElements`).removeAttribute("disabled");
+        document.getElementById(`buttonRandomize`).removeAttribute("disabled");
+        document.getElementById(`sliderAlgo`).removeAttribute("disabled");
+        document.getElementById(`sliderAlgoSpeed`).removeAttribute("disabled");
+        document.getElementById(`buttonVisualize`).removeAttribute("disabled");
+        document.getElementById(`buttonReset`).removeAttribute("disabled");
+    }
+
+
 
     render() {
         return (
@@ -295,12 +349,12 @@ export default class SortingMain extends Component {
                 </div>
                 <div className="footer">
                     <label className="label">Number of elements:</label>
-                    <input type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
+                    <input id="sliderNumElements" type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
                            onChange={this.handleNumElementChange}/>
                     <label className="minorLabel">{this.state.numberOfElements}</label>
-                    <button className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
+                    <button id="buttonRandomize" className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>
                     <label className="label">Sort with: </label>
-                    <select className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
+                    <select id="sliderAlgo" className="dropDown" value={this.state.currentAlgo} onChange={this.updateCurrentAlgo}>
                         {this.state.algorithms.map(algorithms => (
                             <option key={algorithms} value={algorithms}>
                                 {algorithms}
@@ -308,15 +362,15 @@ export default class SortingMain extends Component {
                         ))}
                     </select>
                     <label className="label">Sorting speed:</label>
-                    <select className="dropDownSpeed" value={this.state.sortSpeedSelected} onChange={this.updateSortSpeed}>
+                    <select id="sliderAlgoSpeed" className="dropDownSpeed" value={this.state.sortSpeedSelected} onChange={this.updateSortSpeed}>
                         {this.state.sortSpeed.map(element => (
                             <option key={element} value={element}>
                                 {element}
                             </option>
                         ))}
                     </select>
-                    <button className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
-                    <button className="button" onClick={this.reset}>Reset</button>
+                    <button id="buttonVisualize" className="button" onClick={this.sortElements}>VISUALIZE SORTING</button>
+                    <button id="buttonReset" className="button" onClick={this.reset}>Reset</button>
                 </div>
             </div>
         );
