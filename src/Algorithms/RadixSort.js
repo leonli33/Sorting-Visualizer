@@ -22,6 +22,7 @@ export function radixSort(arr) {
                 height: arr[j],
                 index: j
             }
+            // push animation twice (we need to display color and then remove color)
             positions.push(newPosition);
             positions.push(newPosition);
             // get the digit at the ith place in every element
@@ -31,6 +32,7 @@ export function radixSort(arr) {
         }
 
         let count = 0;
+        // get all elements in the buckets
         for(let j = 0; j < 10; j++) {
             for(let z = 0; z < buckets[j].length; z++) {
                 let newPosition = {
@@ -38,6 +40,7 @@ export function radixSort(arr) {
                     index: count
                 }
                 count++;
+                // push animation twice (we need to display color and then remove color)
                 positions.push(newPosition);
                 positions.push(newPosition);
             }

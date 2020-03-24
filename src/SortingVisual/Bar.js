@@ -11,7 +11,9 @@ export default class Bar extends Component {
     render() {
         return (
         <div className="bar" id={`Bar-${this.props.index}`}>
-        {"a"}
+            <div className="placeholderElement">
+                {this.props.size}
+            </div>
         </div>
         );
     }

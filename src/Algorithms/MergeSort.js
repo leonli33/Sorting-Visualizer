@@ -2,8 +2,6 @@
 // It work by splitting an array down to smaller arrays, sorting the smaller arrays,
 // then merging sorted arrays together. Its time complexity is O(nlog(n))
 
-
-// non recursive implementation
 export function mergeSort(arr) {
     let animations = mergesort(arr);
     return animations;
@@ -13,6 +11,7 @@ function mergesort(arr) {
     let animations = [];
     let length = arr.length;
     let m = 1;
+    // non recursive implementaton of merge sort
     while(m < length) {
         let i = 0;
         while(i < (length - m)) {
@@ -27,12 +26,15 @@ function mergesort(arr) {
 
 // merge two arrays together
 function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,animations) {
-    let mergedArray = [];   
+    let mergedArray = [];   // represents the merged product of the two arrays
+    // make a copy of array given
     let subArrayOne = [...arr1];
     let subArrayTwo = [...arr1];
+    // split arrays based on index given
     subArrayOne = subArrayOne.slice(startIndexLeft, endIndexLeft + 1);
     subArrayTwo = subArrayTwo.slice(startIndexRight,endIndexRight + 1);
 
+    // index being compared
     let indexCompareOne = startIndexLeft;
     let indexCompareTwo = startIndexRight
 
@@ -44,6 +46,7 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
             indexTwo : indexCompareTwo,
             end: false
         }
+        // push animation twice (we need to display color and then remove color)
         animations.push(objectsCompared);
         animations.push(objectsCompared);
         if(subArrayOne[0] > subArrayTwo[0]) {
@@ -68,6 +71,7 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
             indexTwo: indexCompareTwo,
             end:false
         }
+        // push animation twice (we need to display color and then remove color)
         animations.push(objectsCompared);
         animations.push(objectsCompared);
     }
@@ -80,18 +84,24 @@ function merge(arr1, startIndexLeft,endIndexLeft,startIndexRight,endIndexRight,a
             indexTwo: indexCompareTwo,
             end:false
         }
+        // push animation twice (we need to display color and then remove color)
         animations.push(objectsCompared);    
         animations.push(objectsCompared); 
     }
-    console.log(indexCompareOne + "," +  indexCompareTwo)
+
+    // at this point we need to identify that the comparisons have been made and the array is read to merge
+    // therefore set 'end' to true
     let objectsCompared = {
         startIndex: startIndexLeft,
         endIndex: endIndexRight + 1,
         end: true,
         mergedarray: mergedArray
     }
+    // push animation twice (we need to display color and then remove color)
     animations.push(objectsCompared);
     animations.push(objectsCompared);
+    
+    // modify the array by overwriting merged values with the merged array
     let z = 0;
     for(let i = startIndexLeft; i < endIndexRight + 1; i++) {
         arr1[i] = mergedArray[z];

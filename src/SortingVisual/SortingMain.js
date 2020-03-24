@@ -14,7 +14,7 @@ import {shellSort} from '../Algorithms/ShellSort';
 // message to Leon: You're a QUEEN!
 // message to Grev: NO! I am a princess :)
 
-// I was trying to implement this in this.state but 
+
 let gridClear = true;
 
 export default class SortingMain extends Component {
@@ -45,7 +45,7 @@ export default class SortingMain extends Component {
         let margin = (numElements <= 40) ? 8 : 5;
         // calculate width of one bar
         let width = (numElements <= 30) ? 30 : (totalWidth / numElements) - margin - 10;
-        if (numElements > 80) {
+        if (numElements > 70) {
             width = 3;
         }
         // update bars
@@ -138,25 +138,35 @@ export default class SortingMain extends Component {
         }
     };
 
+    // animate the merge sort algorithm
     animateMergeSort(animations,currentSpeed) {
         let length = animations.length;
+        // the index that the set timeout will be relative to
         let time = 0;
         for(let i = 0; i <= length; i++) {
+            // if we have reached the end of the animations, display ending animation
             if(i === length) {
                 setTimeout(() => {
                     this.animationDone();
                 }, time * currentSpeed)
             } else {
+                // get the current animation to be displayed
                 let currentAnimation = animations[i];
+                // if the animation's end property is true, we know that we need to animate a merge
                 if(currentAnimation.end) {
                     let mergeIndex = 0;
+                    // manipuate bars at index 'startIndex' to index 'endIndex
                     for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
+                        // get the merged array
                         let mergedArray = currentAnimation.mergedarray;
-                        this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed,i)
+                        // animate the merged array
+                        this.animateMerging(time,j,mergedArray[mergeIndex],currentSpeed,i);
+                        // increment the time of setTimout
                         mergeIndex++;
                         time++
                     }
                 } else {
+                    // if we do not need to merge, we should only animate the two bars we are comparing
                     this.animateComparison(time, currentAnimation.indexOne, currentAnimation.indexTwo - 1, i,currentSpeed);
                 }
                 time++;
@@ -164,13 +174,17 @@ export default class SortingMain extends Component {
         }
     }
 
+    // animate a comparison between two bars in the array
     animateComparison(time, indexStart,indexEnd, indexInLoop,currentSpeed) {
+        // if the index is even, we know that it is the first time we are seeing this animation,
+        // thus only color the two bars in red
         if(indexInLoop % 2 === 0) {
             setTimeout(()=> {
                 document.getElementById("Bar-" + indexStart).classList.add("comparedElement");
                 document.getElementById("Bar-" + indexEnd).classList.add("comparedElement");
             }, time * currentSpeed);
         } else {
+            // this is the second time we have seen the animation, so remove the color from bars
             setTimeout(()=> {
                 document.getElementById("Bar-" + indexStart).classList.remove("comparedElement");
                 document.getElementById("Bar-" + indexEnd).classList.remove("comparedElement");
@@ -178,67 +192,73 @@ export default class SortingMain extends Component {
         }
     }
 
+    // animate a merge between a set of bars in the array
     animateMerging(time,index,height,currentSpeed,indexInLoop) {
+        // if the index is even, it is the first time we have encountered this merge
+        // color all of the bars to merge in red
         if(indexInLoop % 2 == 0) {
             setTimeout(()=> {
                 document.getElementById("Bar-" + index).classList.add("comparedElement");
             }, time * currentSpeed);
         } else {
+            // if it is odd, it is the second time we have seen the animation, remove the color from the bar and
+            // set it to the appropriate height
             setTimeout(()=> {
                 document.getElementById("Bar-" + index).classList.remove("comparedElement");
                 document.getElementById("Bar-" + index).style.height = height * 8 + "px";
             }, time * currentSpeed);
-        }
-
-        //document.getElementById("Bar-" + index).style.height = height * 8 + "px";
-        
+        }        
     }
 
+    // animate the radix sort algorithm
     animateRadixSort(animations,currentSpeed) {
+        // get the number of animations
         let length = animations.length;
-        let currentArrayIndex = -1;
         for(let i = 0; i <= length; i++) {
+            // if we have reached the end of the animations, display the ending animation
             if(i === length) {
                 setTimeout(() => {
                     this.animationDone();
                 }, i * currentSpeed)
             } else {
+                // get the current animation
                 let currentAnimation = animations[i];
-                currentArrayIndex++;
-                if(currentArrayIndex === this.state.numberOfElements) {
-                    currentArrayIndex = 0;
-                }
+                // if it an even index, it is the first time we have seen the animation, color the bar in appopriately
                 if(i % 2 === 0) {
                     setTimeout(()=> {
-                        console.log(currentArrayIndex);
                         document.getElementById("Bar-" + currentAnimation.index).classList.add("comparedElement");
                     }, i * currentSpeed);
                 } else {
+                    // take color out of bar and set its height appropriately
                     setTimeout(()=> {
                         document.getElementById("Bar-" + currentAnimation.index).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.index).style.height = currentAnimation.height * 8 + "px";
                     }, i * currentSpeed)
                 }
-                currentArrayIndex = currentArrayIndex + 1;    
             }
         }
     }
 
+    // animate the shell sort algorithm
     animateShellSort(animations,currentSpeed) {
         let length = animations.length;
         for(let i = 0;i <= length; i++) {
+            // if we have reached the end of the animations, display the ending animation
             if(i === length) {
                 setTimeout(() => {
                     this.animationDone();
                 }, i * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
+                // if the index is even, it is the first time we have seen the animation, color in the 
+                // bars being compared
                 if(i % 2 == 0) {
                     setTimeout(() => {
                         document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.secondElement).classList.add("comparedElement");
                     }, i * currentSpeed)
                 } else {
+                    // take colors out of bars and set the height of bar appropriately
                     setTimeout(() => {
                         document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                         document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
@@ -249,15 +269,19 @@ export default class SortingMain extends Component {
         }
     }
 
+    // animate the insertion sort algorithm
     animateInsertionSort(animations,currentSpeed) {
         let length = animations.length;
         for(let i = 0; i <= length; i++) {
+            // if we have reached the end of the animations, display the ending animation
             if(i === length) {
                 setTimeout(() => {
                     this.animationDone()
                 }, i * currentSpeed)
             } else {
                 let currentAnimation = animations[i];
+                // if the index is even, it is the first time we have seen the animation, color in the 
+                // bars being compared
                 if(i % 2 === 0) {
                     setTimeout(() => {
                         document.getElementById("Bar-" + currentAnimation.firstElement).classList.add("comparedElement");
@@ -266,11 +290,13 @@ export default class SortingMain extends Component {
                 } 
                 else {
                     if(!currentAnimation.swap) {
+                        // if the bars have not been swapped, remove the color
                         setTimeout(() => {
                             document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                             document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
                         }, (i * currentSpeed))
                     } else {
+                        // if bars have been swapped, take colors out of bars and set the height of bars appropriately
                         setTimeout(() => {
                             document.getElementById("Bar-" + currentAnimation.firstElement).classList.remove("comparedElement");
                             document.getElementById("Bar-" + currentAnimation.secondElement).classList.remove("comparedElement");
@@ -284,6 +310,7 @@ export default class SortingMain extends Component {
         }
     }
 
+    // determines how fast the sorting algorithms are running
     updateSortSpeed = (event) => {
         // fast = 5, medium = 15, slow = 100
         let speed;
@@ -300,6 +327,7 @@ export default class SortingMain extends Component {
         });
     }
 
+    // reset all elements to initial state
     reset = () => {
         let elements = this.loadArray(50);
         gridClear = true;
@@ -313,6 +341,7 @@ export default class SortingMain extends Component {
         });
     };
 
+    // this animation happens when algorithms are done
     animationDone() {
         for(let i = 0; i <= this.state.numberOfElements; i++) {
             if(i < this.state.numberOfElements) {
@@ -373,7 +402,7 @@ export default class SortingMain extends Component {
                 </div>
                 <div className="footer">
                     <label className="label">Number of elements:</label>
-                    <input id="sliderNumElements" type="range" min="2" max="100" className="slider" value={this.state.numberOfElements}
+                    <input id="sliderNumElements" type="range" min="2" max="96" className="slider" value={this.state.numberOfElements}
                            onChange={this.handleNumElementChange}/>
                     <label className="minorLabel">{this.state.numberOfElements}</label>
                     <button id="buttonRandomize" className="button" onClick={this.handleRandomizeClick}>Randomize Elements</button>

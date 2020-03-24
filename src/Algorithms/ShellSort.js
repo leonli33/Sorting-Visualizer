@@ -8,6 +8,7 @@ export function shellSort(arr) {
         return arr;
     }
 
+    // animations to be returned
     let animations = [];
 
     // get the length of the array
@@ -37,22 +38,19 @@ export function shellSort(arr) {
                 }
                 animations.push(comparedElements);
                 animations.push(comparedElements);
-                // swap the elements
+                // set the jth element to be the j - gap element
                 arr[j] = arr[j - gap];
                 last -= gap;
             }
-
-            
-           // if(!swapped) {
-                let comparedElements = {
-                    firstElement: last,
-                    secondElement: i,
-                    secondElementHeight: temp,
-                    firstElementHeight: arr[last]
-                }
-                animations.push(comparedElements);
-                animations.push(comparedElements);
-          //  }
+            let comparedElements = {
+                firstElement: last,
+                secondElement: i,
+                secondElementHeight: temp,
+                firstElementHeight: arr[last]
+            }
+            // push animation twice (we need to display color and then remove color)
+            animations.push(comparedElements);
+            animations.push(comparedElements);
             arr[last] = temp;
         }
         // gap is cut in half each time (eventually becoming insertion sort when it is 1)
