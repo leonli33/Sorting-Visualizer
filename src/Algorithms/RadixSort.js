@@ -15,35 +15,61 @@ export function radixSort(arr) {
     for (let i = 0; i < maxNum; i++) {
         // create 10 empty arrays
         let buckets = Array.from({length: 10}, () => []);
+        
+        // tracks the new index of every element
+        let newIndexes = [];
 
         // for every number in the array:
         for (let j = 0; j < arr.length; j++) {
             let newPosition = {
                 height: arr[j],
-                index: j
+                index: j,
+                row: null,
+                col: null
             }
             // push animation twice (we need to display color and then remove color)
             positions.push(newPosition);
             positions.push(newPosition);
             // get the digit at the ith place in every element
             let position = getPosition(arr[j], i);
+
+            // push the new position of the first element so that
+            // it can be animated first (animation will look cooler)
+
+            // at this point, we dont know what the actual index of this element is,
+            // we will need to calculate it after the loop terminates
+            let newIndex = {
+                height: arr[j],
+                index: undefined,
+                row: position,
+                col: buckets[position].length
+            }
+            newIndexes.push(newIndex);
+
             // push the element into the correct spot in the 10 arrays stored in bucket
             buckets[position].push(arr[j]);
         }
 
-        let count = 0;
-        // get all elements in the buckets
-        for(let j = 0; j < 10; j++) {
-            for(let z = 0; z < buckets[j].length; z++) {
-                let newPosition = {
-                    height: buckets[j][z],
-                    index: count
+        // calculate how many elements come before the position of an index
+        for(let i = 0; i < newIndexes.length; i++) {
+            let currentIndex = newIndexes[i];
+            let newIndex = 0;
+            for(let j = 0; j <= currentIndex.row; j++) {
+                for(let z = 0; z < buckets[j].length; z++) {
+                    if(j === currentIndex.row && z === currentIndex.col) {
+                        break;
+                    }
+                    newIndex++;
                 }
-                count++;
-                // push animation twice (we need to display color and then remove color)
-                positions.push(newPosition);
-                positions.push(newPosition);
             }
+            currentIndex.index = newIndex;
+        }
+
+        // push the elements in newIndexes to be displated in the positions array
+        for(let i = 0; i < newIndexes.length; i++) {
+            // push animation twice (we need to display color and then remove color)
+            positions.push(newIndexes[i]);
+            positions.push(newIndexes[i]);
         }
 
         // set array equal to the non empty elements in buckets in the order they appear
