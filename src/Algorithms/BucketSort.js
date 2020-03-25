@@ -52,13 +52,6 @@ export function bucketSort(arr) {
     // sort each bucket and recombine them
     let sortedArr = [];
     for (let bucket of buckets) {
-        // push a copy of every bucket into animations
-        let copyBucket = [];
-        for (let element of bucket) {
-            copyBucket.push(element);
-        }
-        animations.push(copyBucket);
-        // sort + recombine
         if (bucket.length > 1) {
             insertionSort(bucket);
         }

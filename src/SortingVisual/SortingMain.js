@@ -310,6 +310,7 @@ export default class SortingMain extends Component {
         }
     };
 
+    // animate the bubble sort algorithm
     animateBubbleSort(animations, currentSpeed) {
         let length = animations.length;
         for (let i = 0; i <= length; i++) {
@@ -343,75 +344,40 @@ export default class SortingMain extends Component {
         }
     };
 
+    // animate the bucket sort algorithm
     animateBucketSort(animations, currentSpeed) {
-        let length = animations.length;
-        let currentIndex = 0;
-        for (let i = 0; i <= length; i++) {
-            // original array
-            let original = animations[0];
-            if (i === length) {
-                setTimeout(() => {
-                    this.animationDone();
-                }, original.length * i * currentSpeed);
-            } else {
-                let current = animations[i];
-                if (i === 0) {
-                    // iterate through the original array
-                    for (let j = 0; j < current.length; j++) {
-                        setTimeout(() => {
-                            document.getElementById("Bar-" + j).classList.add("comparedElement");
-                        }, j * currentSpeed);
-                        setTimeout(() => {
-                            document.getElementById("Bar-" + j).classList.remove("comparedElement");
-                        }, (j + 1) * currentSpeed);
-                    }
-                } else if (i === 1) {
-                    // group the array into buckets
-                    setTimeout(() => {
-                        for (let j = 0; j < original.length; j++) {
-                            setTimeout(() => {
-                                document.getElementById("Bar-" + j).classList.add("comparedElement");
-                                document.getElementById("Bar-" + j).style.height = current[j] * 8 + "px";
-                            }, j * currentSpeed);
+        let original = animations[0];
+        let grouped = animations[1];
 
-                            setTimeout(() => {
-                                document.getElementById("Bar-" + j).classList.remove("comparedElement");
-                            }, (j + 1) * currentSpeed);
-                        }
-                    }, (original.length + 1) * currentSpeed);
-                } else {
-                    // insertion sort each bucket
-                    setTimeout(() => {
-                        this.animateInsertionSortForBuckets(insertionSort(current), currentSpeed, currentIndex);
-                        currentIndex += current.length;
-                    }, original.length * i * currentSpeed);
-                }
-            }
-        }
-    };
-
-    animateInsertionSortForBuckets(bucket, currentSpeed, currentIndex) {
-        let length = bucket.length;
-        for(let i = 0; i < length; i++) {
-            let current = bucket[i];
+        // iterate through the original array
+        for (let j = 0; j < original.length; j++) {
             setTimeout(() => {
-                document.getElementById("Bar-" + (current.firstElement + currentIndex)).classList.add("comparedElement");
-                document.getElementById("Bar-" + (current.secondElement + currentIndex)).classList.add("comparedElement");
-            }, i * currentSpeed);
-            if(!current.swap) {
-                setTimeout(() => {
-                    document.getElementById("Bar-" + (current.firstElement + currentIndex)).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + (current.secondElement + currentIndex)).classList.remove("comparedElement");
-                }, (i * currentSpeed))
-            } else {
-                setTimeout(() => {
-                    document.getElementById("Bar-" + (current.firstElement + currentIndex)).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + (current.secondElement + currentIndex)).classList.remove("comparedElement");
-                    document.getElementById("Bar-" + (current.firstElement + currentIndex)).style.height = current.secondElementHeight * 8 + "px";
-                    document.getElementById("Bar-" + (current.secondElement + currentIndex)).style.height = current.firstElementHeight * 8 + "px";
-                }, ((i + 1) * currentSpeed))
-            }
+                document.getElementById("Bar-" + j).classList.add("comparedElement");
+            }, j * currentSpeed);
+            setTimeout(() => {
+                document.getElementById("Bar-" + j).classList.remove("comparedElement");
+            }, (j + 1) * currentSpeed);
         }
+
+        // group the array into buckets
+        setTimeout(() => {
+            for (let j = 0; j < grouped.length; j++) {
+                // add color and change height
+                setTimeout(() => {
+                    document.getElementById("Bar-" + j).classList.add("comparedElement");
+                    document.getElementById("Bar-" + j).style.height = grouped[j] * 8 + "px";
+                }, j * currentSpeed);
+                // remove color
+                setTimeout(() => {
+                    document.getElementById("Bar-" + j).classList.remove("comparedElement");
+                }, (j + 1) * currentSpeed);
+            }
+        }, original.length * currentSpeed);
+
+        // insertion sort the grouped array
+        setTimeout(() => {
+            this.animateInsertionSort(insertionSort(grouped), currentSpeed);
+        }, original.length * 2 * currentSpeed);
     };
 
     // determines how fast the sorting algorithms are running
@@ -475,7 +441,7 @@ export default class SortingMain extends Component {
 
     // enable all elements for user interaction
     enableElements() {
-        console.log("called!")
+        console.log("called!");
         document.getElementById(`sliderNumElements`).removeAttribute("disabled");
         document.getElementById(`buttonRandomize`).removeAttribute("disabled");
         document.getElementById(`sliderAlgo`).removeAttribute("disabled");
