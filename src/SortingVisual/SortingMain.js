@@ -44,7 +44,7 @@ export default class SortingMain extends Component {
         // calculate margin between bars
         let margin = (numElements <= 40) ? 8 : 5;
         // calculate width of one bar
-        let width = (numElements <= 30) ? 30 : (totalWidth / numElements) - margin - 10;
+        let width = (numElements <= 26) ? 30 : (totalWidth / numElements) - margin - 10;
         if (numElements > 70) {
             width = 3;
         }
