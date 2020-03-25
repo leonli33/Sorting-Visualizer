@@ -7,7 +7,17 @@ Separate the elements of the array into "buckets" that hold a specific range
 of values. Individually sort the buckets using insertion sort, then recombine them.
  */
 
+import {insertionSort} from './InsertionSort';
+
 export function bucketSort(arr) {
+    let animations = [];
+    // push a copy of the original array into animations
+    let originalArr = [];
+    for (let element of arr) {
+        originalArr.push(element);
+    }
+    animations.push(originalArr);
+
     // default bucket size
     const BUCKET_SIZE = 5;
     // find min and max values in array
@@ -31,28 +41,30 @@ export function bucketSort(arr) {
     for (let value of arr) {
         buckets[Math.floor((value - min) / BUCKET_SIZE)].push(value);
     }
-    // sort each bucket and recombine them
-    arr.length = 0;
+
+    // push grouped array into animations
+    let groupedArr = [];
     for (let bucket of buckets) {
+        groupedArr = groupedArr.concat(bucket);
+    }
+    animations.push(groupedArr);
+
+    // sort each bucket and recombine them
+    let sortedArr = [];
+    for (let bucket of buckets) {
+        // push a copy of every bucket into animations
+        let copyBucket = [];
+        for (let element of bucket) {
+            copyBucket.push(element);
+        }
+        animations.push(copyBucket);
+        // sort + recombine
         if (bucket.length > 1) {
             insertionSort(bucket);
         }
         if (bucket.length > 0) {
-            arr = arr.concat(bucket);
+            sortedArr = sortedArr.concat(bucket);
         }
     }
-    return arr;
+    return animations;
 }
-
-// helper method: insertion sort to sort the buckets
-let insertionSort = (arr) => {
-    for (let i = 1; i < arr.length; i++) {
-        let value = arr[i];
-        let j = i - 1;
-        for (j; j >= 0 && arr[j] > value; j--) {
-            arr[j + 1] = arr[j];
-        }
-        arr[j + 1] = value;
-    }
-};
-

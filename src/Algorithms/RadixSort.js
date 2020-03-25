@@ -15,7 +15,7 @@ export function radixSort(arr) {
     for (let i = 0; i < maxNum; i++) {
         // create 10 empty arrays
         let buckets = Array.from({length: 10}, () => []);
-        
+
         // tracks the new index of every element
         let newIndexes = [];
 
@@ -26,8 +26,7 @@ export function radixSort(arr) {
                 index: j,
                 row: null,
                 col: null
-            }
-            // push animation twice (we need to display color and then remove color)
+            };
             positions.push(newPosition);
             positions.push(newPosition);
             // get the digit at the ith place in every element
@@ -43,7 +42,7 @@ export function radixSort(arr) {
                 index: undefined,
                 row: position,
                 col: buckets[position].length
-            }
+            };
             newIndexes.push(newIndex);
 
             // push the element into the correct spot in the 10 arrays stored in bucket
