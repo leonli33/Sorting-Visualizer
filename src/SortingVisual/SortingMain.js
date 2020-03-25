@@ -124,7 +124,7 @@ export default class SortingMain extends Component {
         } else if (algo === "Bucket Sort") {
             this.animateBucketSort(bucketSort(elements), currentSpeed);
         } else if (algo === "Heap Sort") {
-            elements = heapSort(elements);
+            this.animateHeapSort(heapSort(elements), currentSpeed);
         } else if (algo === "Insertion Sort") {
             this.animateInsertionSort(insertionSort(elements),currentSpeed);
         } else if (algo === "Merge Sort") {
@@ -314,31 +314,32 @@ export default class SortingMain extends Component {
     animateBubbleSort(animations, currentSpeed) {
         let length = animations.length;
         for (let i = 0; i <= length; i++) {
+            // display ending animation
             if (i === length) {
                 setTimeout(() => {
                     this.animationDone();
                 }, i * currentSpeed)
             } else {
                 let current = animations[i];
-                if (i % 2 === 0) {
+                // add color to the two bars being compared
+                setTimeout(() => {
+                    document.getElementById("Bar-" + current.first).classList.add("comparedElement");
+                    document.getElementById("Bar-" + current.second).classList.add("comparedElement");
+                }, i * currentSpeed);
+                if (!current.swap) {
+                    // if they are not swapped, remove color
                     setTimeout(() => {
-                        document.getElementById("Bar-" + current.first).classList.add("comparedElement");
-                        document.getElementById("Bar-" + current.second).classList.add("comparedElement");
-                    }, i * currentSpeed);
+                        document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
+                    }, (i + 1) * currentSpeed);
                 } else {
-                    if (!current.swap) {
-                        setTimeout(() => {
-                            document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
-                            document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
-                        }, i * currentSpeed);
-                    } else {
-                        setTimeout(() => {
-                            document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
-                            document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
-                            document.getElementById("Bar-" + current.first).style.height = current.secondHeight * 8 + "px";
-                            document.getElementById("Bar-" + current.second).style.height = current.firstHeight * 8 + "px";
-                        }, (i * currentSpeed));
-                    }
+                    // if they are swapped, remove color and then swap their heights
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + current.first).style.height = current.secondHeight * 8 + "px";
+                        document.getElementById("Bar-" + current.second).style.height = current.firstHeight * 8 + "px";
+                    }, ((i + 1) * currentSpeed));
                 }
             }
         }
@@ -346,7 +347,9 @@ export default class SortingMain extends Component {
 
     // animate the bucket sort algorithm
     animateBucketSort(animations, currentSpeed) {
+        // the original array
         let original = animations[0];
+        // the array after being grouped into buckets
         let grouped = animations[1];
 
         // iterate through the original array
@@ -378,6 +381,71 @@ export default class SortingMain extends Component {
         setTimeout(() => {
             this.animateInsertionSort(insertionSort(grouped), currentSpeed);
         }, original.length * 2 * currentSpeed);
+    };
+
+    animateHeapSort(animations, currentSpeed) {
+        let length = animations.length;
+        for (let i = 0; i <= length; i++) {
+            if (i === length) {
+                setTimeout(() => {
+                    this.animationDone();
+                }, i * currentSpeed)
+            } else {
+                let current = animations[i];
+                if (current.maxHeap) {
+                    // building a max heap
+                    // add color to the parent and children elements
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + current.parent).classList.add("comparedElement");
+                        document.getElementById("Bar-" + current.left).classList.add("comparedElement");
+                        document.getElementById("Bar-" + current.right).classList.add("comparedElement");
+                    }, i * currentSpeed);
+                    if (current.swapped) {
+                        // if two elements need to be swapped, remove color and swap the two elements
+                        if (current.swappedLeft) {
+                            // swap parent with left child
+                            setTimeout(() => {
+                                document.getElementById("Bar-" + current.right).classList.remove("comparedElement");
+                                document.getElementById("Bar-" + current.parent).style.height = current.leftHeight * 8 + "px";
+                                document.getElementById("Bar-" + current.left).style.height = current.parentHeight * 8 + "px";
+                                document.getElementById("Bar-" + current.parent).classList.remove("comparedElement");
+                                document.getElementById("Bar-" + current.left).classList.remove("comparedElement");
+                            }, (i + 1) * currentSpeed);
+                        } else {
+                            // swap parent with right child
+                            setTimeout(() => {
+                                document.getElementById("Bar-" + current.left).classList.remove("comparedElement");
+                                document.getElementById("Bar-" + current.parent).style.height = current.rightHeight * 8 + "px";
+                                document.getElementById("Bar-" + current.right).style.height = current.parentHeight * 8 + "px";
+                                document.getElementById("Bar-" + current.parent).classList.remove("comparedElement");
+                                document.getElementById("Bar-" + current.right).classList.remove("comparedElement");
+                            }, (i + 1) * currentSpeed);
+                        }
+
+                    } else {
+                        // if nothing needs to be swapped, remove color
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + current.parent).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + current.left).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + current.right).classList.remove("comparedElement");
+                        }, (i + 1) * currentSpeed);
+                    }
+                } else {
+                    // add color to first and last elements
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + current.first).classList.add("comparedElement");
+                        document.getElementById("Bar-" + current.last).classList.add("comparedElement");
+                    }, i * currentSpeed);
+                    // remove color and swap first and last elements
+                    setTimeout(() => {
+                        document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + current.last).classList.remove("comparedElement");
+                        document.getElementById("Bar-" + current.first).style.height = current.lastHeight * 8 + "px";
+                        document.getElementById("Bar-" + current.last).style.height = current.firstHeight * 8 + "px";
+                    }, (i + 1) * currentSpeed);
+                }
+            }
+        }
     };
 
     // determines how fast the sorting algorithms are running

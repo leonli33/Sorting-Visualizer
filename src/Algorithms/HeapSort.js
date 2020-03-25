@@ -8,46 +8,82 @@ Repeat until there are no more elements to sort.
  */
 
 export function heapSort(arr) {
+    let animations = [];
     // turn the array into a max heap
-    for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
-        maxHeap(arr, i, arr.length);
+    for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
+        maxHeap(arr, i, arr.length - 1, animations);
     }
-    console.log(arr);
     // swap first and last element
     // "delete" last element by decrementing the size
     // fix the remaining heap so it is a max heap again
     let size = arr.length - 1;
     for (let i = size; i > 0; i--) {
+        let compared = {
+            maxHeap: false,
+            first: 0,
+            firstHeight: arr[0],
+            last: i,
+            lastHeight: arr[i],
+        };
+        animations.push(compared);
         swap(arr, 0, i);
         size--;
-        maxHeap(arr, 0, size);
+        maxHeap(arr, 0, size, animations);
     }
-    return arr;
+    return animations;
 }
 
 // create a max heap
-let maxHeap = (arr, low, high) => {
+let maxHeap = (arr, parent, size, animations) => {
     // low = index of parent node
-    let leftChild = 2 * low;
-    let rightChild = 2 * low + 1;
+    let leftChild = 2 * parent;
+    let rightChild = 2 * parent + 1;
 
     // figure out max (the index of the maximum value between the parent and children nodes)
     let max;
-    if (leftChild <= high && arr[leftChild] > arr[low]) {
+    if (leftChild <= size && arr[leftChild] > arr[parent]) {
         max = leftChild;
     } else {
-        max = low;
+        max = parent;
     }
-    if (rightChild <= high && arr[rightChild] > arr[max]) {
+    if (rightChild <= size && arr[rightChild] > arr[max]) {
         max = rightChild;
     }
 
     // if max is not the parent:
     // swap the parent and child so the parent now holds a greater value than its children
     // keep figuring out the max heap with the new parent node
-    if (max !== low) {
-        swap(arr, low, max);
-        maxHeap(arr, max, high);
+    if (max !== parent) {
+        let compared = {
+            maxHeap: true,
+            parent: parent,
+            parentHeight: arr[parent],
+            left: leftChild,
+            leftHeight: arr[leftChild],
+            right: rightChild,
+            rightHeight: arr[rightChild],
+            swapped: true,
+            swappedLeft: false
+        };
+        if (max === leftChild) {
+            compared.swappedLeft = true;
+        }
+        animations.push(compared);
+        console.log("before swap:");
+        console.log(arr);
+        swap(arr, parent, max);
+        console.log("after swap:");
+        console.log(arr);
+        maxHeap(arr, max, size, animations);
+    } else if (leftChild <= size && rightChild <= size) {
+        let compared = {
+            maxHeap: true,
+            parent: parent,
+            left: leftChild,
+            right: rightChild,
+            swapped: false
+        };
+        animations.push(compared);
     }
 };
 

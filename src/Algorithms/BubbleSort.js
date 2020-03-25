@@ -26,7 +26,6 @@ export function bubbleSort(arr) {
                     swap: true
                 };
                 animations.push(comparedElements);
-                animations.push(comparedElements);
                 // swap
                 swap(arr, i, i + 1);
                 sorted = false;
@@ -37,7 +36,6 @@ export function bubbleSort(arr) {
                     second: i + 1,
                     swap: false
                 };
-                animations.push(comparedElements);
                 animations.push(comparedElements);
             }
         }

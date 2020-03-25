@@ -11,11 +11,8 @@ import {insertionSort} from './InsertionSort';
 
 export function bucketSort(arr) {
     let animations = [];
-    // push a copy of the original array into animations
-    let originalArr = [];
-    for (let element of arr) {
-        originalArr.push(element);
-    }
+    // make a copy of original array (for animation purposes)
+    let originalArr = arr.slice();
     animations.push(originalArr);
 
     // default bucket size
@@ -31,18 +28,18 @@ export function bucketSort(arr) {
             max = arr[i];
         }
     }
-    // create buckets
+    // create buckets of size 5
     let range = max - min;
     let buckets = [];
     for (let i = 0; i <= Math.floor(range / BUCKET_SIZE); i++) {
         buckets.push([]);
     }
-    // add to buckets
+    // add values to buckets
     for (let value of arr) {
         buckets[Math.floor((value - min) / BUCKET_SIZE)].push(value);
     }
 
-    // push grouped array into animations
+    // group the buckets together in order (for animation purposes)
     let groupedArr = [];
     for (let bucket of buckets) {
         groupedArr = groupedArr.concat(bucket);
@@ -50,13 +47,13 @@ export function bucketSort(arr) {
     animations.push(groupedArr);
 
     // sort each bucket and recombine them
-    let sortedArr = [];
+    arr = [];
     for (let bucket of buckets) {
         if (bucket.length > 1) {
             insertionSort(bucket);
         }
         if (bucket.length > 0) {
-            sortedArr = sortedArr.concat(bucket);
+            arr = arr.concat(bucket);
         }
     }
     return animations;
