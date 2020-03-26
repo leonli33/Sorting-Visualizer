@@ -494,7 +494,6 @@ export default class SortingMain extends Component {
                 },(i * this.state.currentSpeed) + 1000);
             }
         }
-        console.log(this.state.elementsToSort);
     }
 
     // disable all elements for user interaction
@@ -509,7 +508,6 @@ export default class SortingMain extends Component {
 
     // enable all elements for user interaction
     enableElements() {
-        console.log("called!");
         document.getElementById(`sliderNumElements`).removeAttribute("disabled");
         document.getElementById(`buttonRandomize`).removeAttribute("disabled");
         document.getElementById(`sliderAlgo`).removeAttribute("disabled");
@@ -517,8 +515,6 @@ export default class SortingMain extends Component {
         document.getElementById(`buttonVisualize`).removeAttribute("disabled");
         document.getElementById(`buttonReset`).removeAttribute("disabled");
     }
-
-
 
     render() {
         return (
