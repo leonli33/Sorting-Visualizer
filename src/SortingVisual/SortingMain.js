@@ -13,6 +13,7 @@ import {shellSort} from '../Algorithms/ShellSort';
 // message to Grev: Happy coding! YOU CAN DO IT
 // message to Leon: You're a QUEEN!
 // message to Grev: NO! I am a princess :)
+// message to Leon: we did it!!!
 
 
 let gridClear = true;
@@ -126,15 +127,15 @@ export default class SortingMain extends Component {
         } else if (algo === "Heap Sort") {
             this.animateHeapSort(heapSort(elements), currentSpeed);
         } else if (algo === "Insertion Sort") {
-            this.animateInsertionSort(insertionSort(elements),currentSpeed);
+            this.animateInsertionSort(insertionSort(elements), currentSpeed);
         } else if (algo === "Merge Sort") {
-            this.animateMergeSort(mergeSort(elements),currentSpeed);
+            this.animateMergeSort(mergeSort(elements), currentSpeed);
         } else if (algo === "Quick Sort") {
-            elements = quickSort(elements);
+            this.animateQuickSort(quickSort(elements), currentSpeed);
         } else if (algo === "Radix Sort") {
-            this.animateRadixSort(radixSort(elements),currentSpeed);
+            this.animateRadixSort(radixSort(elements), currentSpeed);
         } else if (algo === "Shell Sort") {
-            this.animateShellSort(shellSort(elements),currentSpeed);
+            this.animateShellSort(shellSort(elements), currentSpeed);
         }
     };
 
@@ -155,7 +156,7 @@ export default class SortingMain extends Component {
                 // if the animation's end property is true, we know that we need to animate a merge
                 if(currentAnimation.end) {
                     let mergeIndex = 0;
-                    // manipuate bars at index 'startIndex' to index 'endIndex
+                    // manipulate bars at index 'startIndex' to index 'endIndex
                     for(let j = currentAnimation.startIndex; j < currentAnimation.endIndex; j++) {
                         // get the merged array
                         let mergedArray = currentAnimation.mergedarray;
@@ -383,13 +384,14 @@ export default class SortingMain extends Component {
         }, original.length * 2 * currentSpeed);
     };
 
+    // animate the heap sort algorithm
     animateHeapSort(animations, currentSpeed) {
         let length = animations.length;
         for (let i = 0; i <= length; i++) {
             if (i === length) {
                 setTimeout(() => {
                     this.animationDone();
-                }, i * currentSpeed)
+                }, i * currentSpeed);
             } else {
                 let current = animations[i];
                 if (current.maxHeap) {
@@ -444,6 +446,66 @@ export default class SortingMain extends Component {
                         document.getElementById("Bar-" + current.last).style.height = current.firstHeight * 8 + "px";
                     }, (i + 1) * currentSpeed);
                 }
+            }
+        }
+    };
+
+    // animate the quick sort algorithm
+    animateQuickSort(animations, currentSpeed) {
+        let length = animations.length;
+        let nextTime = 0;
+        for (let i = 0; i <= length; i++) {
+            if (i === length) {
+                // display ending animation
+                setTimeout(() => {
+                    this.animationDone();
+                }, (i + nextTime) * currentSpeed);
+            } else {
+                let current = animations[i];
+                // MOVE PIVOT TO CORRECT LOCATION
+                // add color to pivot
+                setTimeout(() => {
+                    document.getElementById("Bar-" + current.start).classList.add("comparedElement");
+                    document.getElementById("Bar-" + current.pivotIndex).classList.add("comparedElement");
+                }, (i + nextTime) * currentSpeed);
+                // remove color to pivot and swap places with the bar at its correct location
+                setTimeout(() => {
+                    document.getElementById("Bar-" + current.start).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + current.pivotIndex).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + current.start).style.height = current.oldPivotIndexValue * 8 + "px";
+                    document.getElementById("Bar-" + current.pivotIndex).style.height = current.pivot * 8 + "px";
+                }, (i + nextTime + 1) * currentSpeed);
+
+                // PARTITION THE REST OF THE ARRAY AROUND PIVOT
+                setTimeout(() => {
+                    // move all the elements less than the pivot to the left side
+                    let time1 = 0;
+                    for (let j = current.start; j < current.pivotIndex; j++) {
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + j).classList.add("comparedElement");
+                        }, time1 * currentSpeed);
+                        let newHeight = current.lower[j - current.start];
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + j).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + j).style.height = newHeight * 8 + "px";
+                        }, (time1 + 1) * currentSpeed);
+                        time1++;
+                    }
+                    // move all the elements greater than the pivot to the right side
+                    let time2 = 0;
+                    for (let j = current.end; j >= current.pivotIndex + 1; j--) {
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + j).classList.add("comparedElement");
+                        }, time2 * currentSpeed);
+                        let newHeight = current.higher[j - current.pivotIndex - 1];
+                        setTimeout(() => {
+                            document.getElementById("Bar-" + j).classList.remove("comparedElement");
+                            document.getElementById("Bar-" + j).style.height = newHeight * 8 + "px";
+                        }, (time2 + 1) * currentSpeed);
+                        time2++;
+                    }
+                }, (i + nextTime + 2) * currentSpeed);
+                nextTime = i + nextTime + Math.max(current.lower.length, current.higher.length) + 3;
             }
         }
     };

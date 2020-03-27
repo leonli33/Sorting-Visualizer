@@ -8,24 +8,55 @@ before x and greater elements after x. Sort left and right sides recursively.
  */
 
 export function quickSort(arr) {
-    // base case: if the array has length 0 or 1, return the array.
-    if (arr.length < 2) {
-        return arr;
-    }
-    // recursive case: the pivot is the first element of the array.
-    let pivot = arr[0];
+    let animations = [];
+    quickSortHelper(arr, animations, 0, arr.length - 1);
+    console.log(animations);
+    return animations;
+}
+
+function quickSortHelper(arr, animations, start, end) {
+    // choose a pivot
+    let pivot = arr[start];
     // all the elements lower than the pivot
     let lower = [];
     // all the elements greater than the pivot
     let higher = [];
+
     // sort arr into lower and higher (equal to pivot -> higher)
-    for (let i = 1; i < arr.length; i++) {
+    for (let i = start + 1; i <= end; i++) {
         if (arr[i] < pivot) {
             lower.push(arr[i]);
         } else {
             higher.push(arr[i]);
         }
     }
-    // recurse: sorted lower + pivot + sorted higher
-    return quickSort(lower).concat(pivot).concat(quickSort(higher));
+    let pivotIndex = start + lower.length;
+
+    // information for animations
+    let info = {
+        start: start,
+        end: end,
+        pivot: pivot,
+        pivotIndex: pivotIndex,
+        oldPivotIndexValue: arr[pivotIndex],
+        lower: lower,
+        higher: higher
+    };
+    animations.push(info);
+
+    // rearrange array
+    for (let i = start; i < pivotIndex; i++) {
+        arr[i] = lower[i - start];
+    }
+    arr[pivotIndex] = pivot;
+    for (let i = pivotIndex + 1; i <= end; i++) {
+        arr[i] = higher[i - pivotIndex - 1];
+    }
+
+    if (lower.length >= 2) {
+        quickSortHelper(arr, animations, start, pivotIndex - 1);
+    }
+    if (higher.length >= 2) {
+        quickSortHelper(arr, animations, pivotIndex + 1, end);
+    }
 }
