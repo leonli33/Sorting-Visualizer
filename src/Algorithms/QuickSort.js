@@ -13,6 +13,9 @@ export function quickSort(arr) {
     return animations;
 }
 
+// partitions the array between the given start and end indexes. chooses a pivot and rearranges the array so the
+// elements on the left side of the pivot are less than the pivot and the elements on the right side are greater
+// than or equal to the pivot. continues to partition sections of the array until it is sorted.
 function quickSortHelper(arr, animations, start, end) {
     // choose a pivot
     let pivot = arr[start];
@@ -21,7 +24,7 @@ function quickSortHelper(arr, animations, start, end) {
     // all the elements greater than the pivot
     let higher = [];
 
-    // sort arr into lower and higher (equal to pivot -> higher)
+    // partition the elements (less than the pivot -> lower, greater than or equal to the pivot -> higher)
     for (let i = start + 1; i <= end; i++) {
         if (arr[i] < pivot) {
             lower.push(arr[i]);
@@ -29,9 +32,11 @@ function quickSortHelper(arr, animations, start, end) {
             higher.push(arr[i]);
         }
     }
+
+    // the correct index of the pivot
     let pivotIndex = start + lower.length;
 
-    // information for animations
+    // store information about the pivot and lower/higher elements (for animation purposes)
     let info = {
         start: start,
         end: end,
@@ -43,7 +48,8 @@ function quickSortHelper(arr, animations, start, end) {
     };
     animations.push(info);
 
-    // rearrange array
+    // rearrange array so the elements less than the pivot are on the left side, the pivot is in the
+    // correct location, and the elements greater than or equal to the pivot are on the right side
     for (let i = start; i < pivotIndex; i++) {
         arr[i] = lower[i - start];
     }
@@ -52,10 +58,11 @@ function quickSortHelper(arr, animations, start, end) {
         arr[i] = higher[i - pivotIndex - 1];
     }
 
-    if (lower.length >= 2) {
+    // as long as there is more than one element, partition the left and right sides of the pivot
+    if (lower.length > 1) {
         quickSortHelper(arr, animations, start, pivotIndex - 1);
     }
-    if (higher.length >= 2) {
+    if (higher.length > 1) {
         quickSortHelper(arr, animations, pivotIndex + 1, end);
     }
 }

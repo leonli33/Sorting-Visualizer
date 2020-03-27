@@ -111,9 +111,6 @@ export default class SortingMain extends Component {
     };
 
     // sorts the elements using the current selected algorithm
-    // (NOT ANIMATED)
-    // this is probably not the most efficient way to do it, so please make it better if you know how to!
-    // also heapSort doesn't work, i need to fix that :/
     sortElements = () => {
         gridClear = false;
         let currentSpeed = this.state.currentSpeed;
@@ -334,7 +331,7 @@ export default class SortingMain extends Component {
                         document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
                     }, (i + 1) * currentSpeed);
                 } else {
-                    // if they are swapped, remove color and then swap their heights
+                    // if they are swapped, remove color and swap their heights
                     setTimeout(() => {
                         document.getElementById("Bar-" + current.first).classList.remove("comparedElement");
                         document.getElementById("Bar-" + current.second).classList.remove("comparedElement");
@@ -352,7 +349,6 @@ export default class SortingMain extends Component {
         let original = animations[0];
         // the array after being grouped into buckets
         let grouped = animations[1];
-
         // iterate through the original array
         for (let j = 0; j < original.length; j++) {
             setTimeout(() => {
@@ -362,22 +358,20 @@ export default class SortingMain extends Component {
                 document.getElementById("Bar-" + j).classList.remove("comparedElement");
             }, (j + 1) * currentSpeed);
         }
-
         // group the array into buckets
         setTimeout(() => {
             for (let j = 0; j < grouped.length; j++) {
-                // add color and change height
+                // add color
                 setTimeout(() => {
                     document.getElementById("Bar-" + j).classList.add("comparedElement");
-                    document.getElementById("Bar-" + j).style.height = grouped[j] * 8 + "px";
                 }, j * currentSpeed);
-                // remove color
+                // remove color and change height
                 setTimeout(() => {
                     document.getElementById("Bar-" + j).classList.remove("comparedElement");
+                    document.getElementById("Bar-" + j).style.height = grouped[j] * 8 + "px";
                 }, (j + 1) * currentSpeed);
             }
         }, original.length * currentSpeed);
-
         // insertion sort the grouped array
         setTimeout(() => {
             this.animateInsertionSort(insertionSort(grouped), currentSpeed);
@@ -388,6 +382,7 @@ export default class SortingMain extends Component {
     animateHeapSort(animations, currentSpeed) {
         let length = animations.length;
         for (let i = 0; i <= length; i++) {
+            // display ending animation
             if (i === length) {
                 setTimeout(() => {
                     this.animationDone();
@@ -433,6 +428,7 @@ export default class SortingMain extends Component {
                         }, (i + 1) * currentSpeed);
                     }
                 } else {
+                    // if it is already a max heap, swap first and last elements
                     // add color to first and last elements
                     setTimeout(() => {
                         document.getElementById("Bar-" + current.first).classList.add("comparedElement");
@@ -462,7 +458,7 @@ export default class SortingMain extends Component {
                 }, (i + nextTime) * currentSpeed);
             } else {
                 let current = animations[i];
-                // MOVE PIVOT TO CORRECT LOCATION
+                // move pivot to correct location
                 // add color to pivot
                 setTimeout(() => {
                     document.getElementById("Bar-" + current.start).classList.add("comparedElement");
@@ -476,7 +472,7 @@ export default class SortingMain extends Component {
                     document.getElementById("Bar-" + current.pivotIndex).style.height = current.pivot * 8 + "px";
                 }, (i + nextTime + 1) * currentSpeed);
 
-                // PARTITION THE REST OF THE ARRAY AROUND PIVOT
+                // partition the rest of the elements around the pivot
                 setTimeout(() => {
                     // move all the elements less than the pivot to the left side
                     let time1 = 0;

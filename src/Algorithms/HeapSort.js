@@ -54,6 +54,7 @@ let maxHeap = (arr, parent, size, animations) => {
     // swap the parent and child so the parent now holds a greater value than its children
     // keep figuring out the max heap with the new parent node
     if (max !== parent) {
+        // store parent/child information if either child is greater than the parent (for animation purposes)
         let compared = {
             maxHeap: true,
             parent: parent,
@@ -69,9 +70,12 @@ let maxHeap = (arr, parent, size, animations) => {
             compared.swappedLeft = true;
         }
         animations.push(compared);
+        // swap parent and child
         swap(arr, parent, max);
+        // check if it is now a max heap
         maxHeap(arr, max, size, animations);
     } else if (leftChild <= size && rightChild <= size) {
+        // store parent/child information if the parent is greater than its children (for animation purposes)
         let compared = {
             maxHeap: true,
             parent: parent,
