@@ -15,6 +15,7 @@ function mergesort(arr) {
     while(m < length) {
         let i = 0;
         while(i < (length - m)) {
+            // merge two arrays together
             merge(arr,i,i + m - 1, i + m, Math.min(i + (2*m) - 1, length - 1), animations);
             i = i + (2 * m);
         }

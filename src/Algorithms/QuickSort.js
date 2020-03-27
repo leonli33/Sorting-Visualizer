@@ -10,7 +10,6 @@ before x and greater elements after x. Sort left and right sides recursively.
 export function quickSort(arr) {
     let animations = [];
     quickSortHelper(arr, animations, 0, arr.length - 1);
-    console.log(animations);
     return animations;
 }
 

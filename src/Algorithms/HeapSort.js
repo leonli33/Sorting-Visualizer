@@ -69,11 +69,7 @@ let maxHeap = (arr, parent, size, animations) => {
             compared.swappedLeft = true;
         }
         animations.push(compared);
-        console.log("before swap:");
-        console.log(arr);
         swap(arr, parent, max);
-        console.log("after swap:");
-        console.log(arr);
         maxHeap(arr, max, size, animations);
     } else if (leftChild <= size && rightChild <= size) {
         let compared = {
