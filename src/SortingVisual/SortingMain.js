@@ -10,12 +10,6 @@ import {quickSort} from '../Algorithms/QuickSort';
 import {radixSort} from '../Algorithms/RadixSort';
 import {shellSort} from '../Algorithms/ShellSort';
 
-// message to Grev: Happy coding! YOU CAN DO IT
-// message to Leon: You're a QUEEN!
-// message to Grev: NO! I am a princess :)
-// message to Leon: we did it!!!
-
-
 let gridClear = true;
 
 export default class SortingMain extends Component {
