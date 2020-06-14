@@ -495,7 +495,7 @@ export default class SortingMain extends Component {
                         time2++;
                     }
                 }, (i + nextTime + 1) * currentSpeed);
-                nextTime = nextTime + Math.max(current.lower.length, current.higher.length) + 3;
+                nextTime = 3 + nextTime + Math.max(current.lower.length, current.higher.length);
             }
         }
     };
