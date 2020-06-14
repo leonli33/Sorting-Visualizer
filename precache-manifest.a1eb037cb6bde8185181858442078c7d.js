@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6e5dea8c7e23e6eecf1cf4f9e80b219d",
+    "revision": "d8f3d64b8ab670c710af6382653a08b9",
     "url": "/Sorting-Visualizer/index.html"
   },
   {
-    "revision": "8f8096161c80ed2f1105",
-    "url": "/Sorting-Visualizer/static/css/main.93f6e173.chunk.css"
+    "revision": "5904a78f9588c5eae91b",
+    "url": "/Sorting-Visualizer/static/css/main.157ff7af.chunk.css"
   },
   {
     "revision": "9cfef8e0a7c79c14373c",
@@ -16,15 +16,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Sorting-Visualizer/static/js/2.89e00fee.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8f8096161c80ed2f1105",
-    "url": "/Sorting-Visualizer/static/js/main.5932da2a.chunk.js"
+    "revision": "5904a78f9588c5eae91b",
+    "url": "/Sorting-Visualizer/static/js/main.97dae2af.chunk.js"
   },
   {
     "revision": "37b6bf7c64a0f8f7ac92",
     "url": "/Sorting-Visualizer/static/js/runtime-main.16100e54.js"
   },
   {
-    "revision": "5d5d9eefa31e5e13a6610d9fa7a283bb",
-    "url": "/Sorting-Visualizer/static/media/logo.5d5d9eef.svg"
+    "revision": "ee7cd8ed2dcec943251eb2763684fc6f",
+    "url": "/Sorting-Visualizer/static/media/logo.ee7cd8ed.svg"
   }
 ]);
