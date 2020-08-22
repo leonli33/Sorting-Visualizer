@@ -1,12 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import SortingMain from './SortingVisual/SortingMain';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import SortingMain from "./SortingVisual/SortingMain";
 
 function App() {
-  return (
-    <SortingMain/>
-  );
+  return <SortingMain />;
 }
 
 export default App;

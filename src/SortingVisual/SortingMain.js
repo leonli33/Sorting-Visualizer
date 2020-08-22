@@ -394,20 +394,26 @@ export default class SortingMain extends Component {
     }, original.length * 2 * currentSpeed);
   }
 
-  setMultipleBarsToBeingCompared = (index) => {
+  // If we use setState to change the color of every bar individually, there will be lag with the heap sort algorithm.
+  setMultipleBarsToBeingCompared = (indexes) => {
     let currentElements = this.state.elementsToSort.slice();
-    for (let i = 0; i < index.length; i++) {
-      currentElements[index[i]].isBeingCompared = true;
+    for (let i = 0; i < indexes.length; i++) {
+      if (currentElements[indexes[i]]) {
+        currentElements[indexes[i]].isBeingCompared = true;
+      }
     }
     this.setState({
       elementsToSort: currentElements,
     });
   };
 
+  // If we use setState to change the color of every bar individually, there will be lag with the heap sort algorithm.
   setMultipleBarToNotBeingCompared = (index) => {
     let currentElements = this.state.elementsToSort.slice();
     for (let i = 0; i < index.length; i++) {
-      currentElements[index[i]].isBeingCompared = false;
+      if (currentElements[index[i]]) {
+        currentElements[index[i]].isBeingCompared = false;
+      }
     }
     this.setState({
       elementsToSort: currentElements,
@@ -428,91 +434,63 @@ export default class SortingMain extends Component {
         if (current.maxHeap) {
           // building a max heap
           // add color to the parent and children elements
+
           setTimeout(() => {
-            document
-              .getElementById("Bar-" + current.parent)
-              .classList.add("comparedElement");
-            document
-              .getElementById("Bar-" + current.left)
-              .classList.add("comparedElement");
-            document
-              .getElementById("Bar-" + current.right)
-              .classList.add("comparedElement");
+            this.setMultipleBarsToBeingCompared([
+              current.parent,
+              current.left,
+              current.right,
+            ]);
           }, i * currentSpeed);
           if (current.swapped) {
             // if two elements need to be swapped, remove color and swap the two elements
             if (current.swappedLeft) {
               // swap parent with left child
               setTimeout(() => {
-                document
-                  .getElementById("Bar-" + current.right)
-                  .classList.remove("comparedElement");
-                document.getElementById("Bar-" + current.parent).style.height =
-                  current.leftHeight * 8 + "px";
-                document.getElementById("Bar-" + current.left).style.height =
-                  current.parentHeight * 8 + "px";
-                document
-                  .getElementById("Bar-" + current.parent)
-                  .classList.remove("comparedElement");
-                document
-                  .getElementById("Bar-" + current.left)
-                  .classList.remove("comparedElement");
+                this.setMultipleBarToNotBeingCompared([
+                  current.parent,
+                  current.left,
+                  current.right,
+                ]);
+                this.changeBarSize(current.parent, current.leftHeight);
+                this.changeBarSize(current.left, current.parentHeight);
               }, (i + 1) * currentSpeed);
             } else {
               // swap parent with right child
               setTimeout(() => {
-                document
-                  .getElementById("Bar-" + current.left)
-                  .classList.remove("comparedElement");
-                document.getElementById("Bar-" + current.parent).style.height =
-                  current.rightHeight * 8 + "px";
-                document.getElementById("Bar-" + current.right).style.height =
-                  current.parentHeight * 8 + "px";
-                document
-                  .getElementById("Bar-" + current.parent)
-                  .classList.remove("comparedElement");
-                document
-                  .getElementById("Bar-" + current.right)
-                  .classList.remove("comparedElement");
+                this.setMultipleBarToNotBeingCompared([
+                  current.left,
+                  current.parent,
+                  current.right,
+                ]);
+                this.changeBarSize(current.parent, current.rightHeight);
+                this.changeBarSize(current.right, current.parentHeight);
               }, (i + 1) * currentSpeed);
             }
           } else {
             // if nothing needs to be swapped, remove color
             setTimeout(() => {
-              document
-                .getElementById("Bar-" + current.parent)
-                .classList.remove("comparedElement");
-              document
-                .getElementById("Bar-" + current.left)
-                .classList.remove("comparedElement");
-              document
-                .getElementById("Bar-" + current.right)
-                .classList.remove("comparedElement");
+              this.setMultipleBarToNotBeingCompared([
+                current.left,
+                current.parent,
+                current.right,
+              ]);
             }, (i + 1) * currentSpeed);
           }
         } else {
           // if it is already a max heap, swap first and last elements
           // add color to first and last elements
           setTimeout(() => {
-            document
-              .getElementById("Bar-" + current.first)
-              .classList.add("comparedElement");
-            document
-              .getElementById("Bar-" + current.last)
-              .classList.add("comparedElement");
+            this.setMultipleBarsToBeingCompared([current.first, current.last]);
           }, i * currentSpeed);
           // remove color and swap first and last elements
           setTimeout(() => {
-            document
-              .getElementById("Bar-" + current.first)
-              .classList.remove("comparedElement");
-            document
-              .getElementById("Bar-" + current.last)
-              .classList.remove("comparedElement");
-            document.getElementById("Bar-" + current.first).style.height =
-              current.lastHeight * 8 + "px";
-            document.getElementById("Bar-" + current.last).style.height =
-              current.firstHeight * 8 + "px";
+            this.setMultipleBarToNotBeingCompared([
+              current.first,
+              current.last,
+            ]);
+            this.changeBarSize(current.first, current.lastHeight);
+            this.changeBarSize(current.last, current.firstHeight);
           }, (i + 1) * currentSpeed);
         }
       }
@@ -614,16 +592,6 @@ export default class SortingMain extends Component {
   setBarToDone = (index) => {
     let currentElements = this.state.elementsToSort.slice();
     currentElements[index].isDoneBeingSorted = true;
-    this.setState({
-      elementsToSort: currentElements,
-    });
-  };
-
-  setAllBarsToNotDone = () => {
-    let currentElements = this.state.elementsToSort.slice();
-    for (let i = 0; i < currentElements.length; i++) {
-      currentElements[i].isDoneBeingSorted = false;
-    }
     this.setState({
       elementsToSort: currentElements,
     });
