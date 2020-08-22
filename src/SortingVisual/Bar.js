@@ -1,20 +1,30 @@
-import React, {Component} from 'react'
-import './Bar.css';
+import React, { Component } from "react";
+import "./Bar.css";
 
 export default class Bar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: this.props.size
-        };
+  render() {
+    const {
+      size,
+      isDoneBeingSorted,
+      isBeingCompared,
+      isCurrentlyInCorrectOrder,
+      index,
+      showSize,
+    } = this.props;
+
+    let extraClassName = "";
+    if (isDoneBeingSorted) {
+      extraClassName = "doneElement";
+    } else if (isBeingCompared) {
+      extraClassName = "comparedElement";
+    } else if (isCurrentlyInCorrectOrder) {
     }
-    render() {
-        return (
-        <div className="bar" id={`Bar-${this.props.index}`}>
-            <div className="placeholderElement">
-                {this.props.size}
-            </div>
-        </div>
-        );
-    }
+    return (
+      <div className={`bar ${extraClassName}`} id={`Bar-${index}`}>
+        <text className={`${showSize ? "size-text" : "hide-size"}`}>
+          {size}
+        </text>
+      </div>
+    );
+  }
 }

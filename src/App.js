@@ -5,7 +5,7 @@ import SortingMain from './SortingVisual/SortingMain';
 
 function App() {
   return (
-    <SortingMain></SortingMain>
+    <SortingMain/>
   );
 }
 

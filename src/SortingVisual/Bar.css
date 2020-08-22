@@ -1,27 +1,31 @@
 .bar {
-    width: 17px;
-    height: 70px;
-    background-color: lavender;
-    display: inline-flex;
-    position: relative;
-    margin: 5px;
-    font-family: "Helvetica Neue", sans-serif;
-    font-size: 10px;
-    color: lavender;
-    text-align: center;
+  width: 17px;
+  height: 70px;
+  background-color: lavender;
+  display: inline-flex;
+  position: relative;
+  margin: 5px;
+  font-family: "Helvetica Neue", sans-serif;
+  color: lavender;
+  justify-content: center;
 }
 
 .doneElement {
-    background-color: lightgreen;
-    color: lightgreen;
+  background-color: lightgreen;
+  color: lightgreen;
 }
 
 .comparedElement {
-    background-color: lightcoral;
-    color:lightcoral
+  background-color: red;
 }
 
-.placeholderElement {
-    visibility: hidden;
+.size-text {
+  color: darkslategray;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 2px;
 }
 
+.hide-size {
+  visibility: hidden;
+}
