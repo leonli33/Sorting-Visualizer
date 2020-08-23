@@ -14,14 +14,14 @@ export default class SortingMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentAlgo: "Merge Sort",
+      currentAlgo: "Algorithms",
       algorithms: [],
       elementsToSort: [],
       elementsToSortSizes: [],
       numberOfElements: 50,
       sortSpeed: ["Slow", "Regular", "Fast"],
-      sortSpeedSelected: "Regular",
-      currentSpeed: 25,
+      sortSpeedSelected: "Sorting Speed",
+      currentSpeed: 0,
       gridBeingUsed: false,
     };
   }
@@ -75,11 +75,13 @@ export default class SortingMain extends Component {
   // randomizes the values of the bars (elements to be sorted)
   handleRandomizeClick = () => {
     // randomize elements
-    let elements = this.loadArray();
-    this.setState({
-      elementsToSortSizes: elements.elementSize,
-      elementsToSort: elements.elementObjects,
-    });
+    if (!this.state.gridBeingUsed) {
+      let elements = this.loadArray();
+      this.setState({
+        elementsToSortSizes: elements.elementSize,
+        elementsToSort: elements.elementObjects,
+      });
+    }
   };
 
   // initialize values of bars (elements to be sorted) to the given number of random values
@@ -88,7 +90,7 @@ export default class SortingMain extends Component {
     let elementSizes = [];
     let size = num ? num : this.state.numberOfElements;
     for (let i = 0; i < size; i++) {
-      let num = this.getRandomInt(50);
+      let num = this.getRandomInt(60);
       elementSizes.push(num);
       elementObjects.push(this.createBar(num));
     }
@@ -111,7 +113,7 @@ export default class SortingMain extends Component {
     let newElementsToSortSizes = [];
     let newElementsToSortBars = [];
     for (let i = 0; i < numElements; i++) {
-      let num = this.getRandomInt(50);
+      let num = this.getRandomInt(60);
       newElementsToSortSizes.push(num);
       newElementsToSortBars.push(this.createBar(num));
     }
@@ -123,10 +125,10 @@ export default class SortingMain extends Component {
   };
 
   // updates the selected sorting algorithm
-  updateCurrentAlgo = (event) => {
+  updateCurrentAlgo = (algorithm) => {
     // set the current algo selected
     this.setState({
-      currentAlgo: event.target.value,
+      currentAlgo: algorithm,
     });
   };
 
@@ -152,33 +154,6 @@ export default class SortingMain extends Component {
     this.setState({
       elementsToSort: currentElements,
     });
-  };
-
-  // sorts the elements using the current selected algorithm
-  sortElements = () => {
-    this.setState({
-      gridBeingUsed: true,
-    });
-    let currentSpeed = this.state.currentSpeed;
-    let elements = this.state.elementsToSortSizes;
-    let algo = this.state.currentAlgo;
-    if (algo === "Bubble Sort") {
-      this.animateBubbleSort(bubbleSort(elements), currentSpeed);
-    } else if (algo === "Bucket Sort") {
-      this.animateBucketSort(bucketSort(elements), currentSpeed);
-    } else if (algo === "Heap Sort") {
-      this.animateHeapSort(heapSort(elements), currentSpeed);
-    } else if (algo === "Insertion Sort") {
-      this.animateInsertionSort(insertionSort(elements), currentSpeed);
-    } else if (algo === "Merge Sort") {
-      this.animateMergeSort(mergeSort(elements), currentSpeed);
-    } else if (algo === "Quick Sort") {
-      this.animateQuickSort(quickSort(elements), currentSpeed);
-    } else if (algo === "Radix Sort") {
-      this.animateRadixSort(radixSort(elements), currentSpeed);
-    } else if (algo === "Shell Sort") {
-      this.animateShellSort(shellSort(elements), currentSpeed);
-    }
   };
 
   // animate the merge sort algorithm
@@ -559,34 +534,35 @@ export default class SortingMain extends Component {
   }
 
   // determines how fast the sorting algorithms are running
-  updateSortSpeed = (event) => {
+  updateSortSpeed = (speed) => {
     // fast = 5, medium = 15, slow = 100
-    let speed;
-    if (event.target.value === "Slow") {
-      speed = 100;
-    } else if (event.target.value === "Regular") {
-      speed = 30;
+    let speed_value_ms;
+    if (speed === "Slow") {
+      speed_value_ms = 100;
+    } else if (speed === "Regular") {
+      speed_value_ms = 30;
     } else {
-      speed = 20;
+      speed_value_ms = 20;
     }
     this.setState({
-      sortSpeedSelected: event.target.value,
-      currentSpeed: speed,
+      sortSpeedSelected: speed,
+      currentSpeed: speed_value_ms,
     });
   };
 
   // reset all elements to initial state
   reset = () => {
-    let elements = this.loadArray(50);
-    this.setState({
-      numberOfElements: 50,
-      elementsToSortSizes: elements.elementSize,
-      currentAlgo: "Merge Sort",
-      sortSpeedSelected: "Regular",
-      currentSpeed: 15,
-      gridBeingUsed: false,
-      elementsToSort: elements.elementObjects,
-    });
+    if (!this.state.gridBeingUsed) {
+      let elements = this.loadArray(50);
+      this.setState({
+        numberOfElements: 50,
+        elementsToSortSizes: elements.elementSize,
+        currentAlgo: "Algorithms",
+        sortSpeedSelected: "Sorting Speed",
+        currentSpeed: 0,
+        elementsToSort: elements.elementObjects,
+      });
+    }
   };
 
   setBarToDone = (index) => {
@@ -619,9 +595,223 @@ export default class SortingMain extends Component {
     }
   }
 
+  // sorts the elements using the current selected algorithm
+  sortElements = () => {
+    document.getElementById("check").checked = false;
+    if (
+      !this.state.gridBeingUsed &&
+      this.state.currentAlgo !== "Algorithms" &&
+      this.state.sortSpeedSelected !== "Sorting Speed"
+    ) {
+      this.setState({
+        gridBeingUsed: true,
+      });
+      setTimeout(() => {
+        let currentSpeed = this.state.currentSpeed;
+        let elements = this.state.elementsToSortSizes;
+        let algo = this.state.currentAlgo;
+        if (algo === "Bubble Sort") {
+          this.animateBubbleSort(bubbleSort(elements), currentSpeed);
+        } else if (algo === "Bucket Sort") {
+          this.animateBucketSort(bucketSort(elements), currentSpeed);
+        } else if (algo === "Heap Sort") {
+          this.animateHeapSort(heapSort(elements), currentSpeed);
+        } else if (algo === "Insertion Sort") {
+          this.animateInsertionSort(insertionSort(elements), currentSpeed);
+        } else if (algo === "Merge Sort") {
+          this.animateMergeSort(mergeSort(elements), currentSpeed);
+        } else if (algo === "Quick Sort") {
+          this.animateQuickSort(quickSort(elements), currentSpeed);
+        } else if (algo === "Radix Sort") {
+          this.animateRadixSort(radixSort(elements), currentSpeed);
+        } else if (algo === "Shell Sort") {
+          this.animateShellSort(shellSort(elements), currentSpeed);
+        }
+      }, 600);
+    }
+  };
+
+  changingNumberOfElements = () => {
+    let sidebar = document.getElementById("left-sidebar");
+    sidebar.style.opacity = 0.5;
+  };
+
+  stoppedChangingNumberOfElements = () => {
+    let sidebar = document.getElementById("left-sidebar");
+    sidebar.style.opacity = 1;
+  };
+
+  dropDownSpeedPressed = () => {
+    if (!this.state.gridBeingUsed) {
+      document
+        .getElementById("speed-options")
+        .classList.toggle("speed-options-show");
+    }
+  };
+
+  dropDownAlgorithmsPressed = () => {
+    if (!this.state.gridBeingUsed) {
+      document
+        .getElementById("algorithm-options")
+        .classList.toggle("algorithm-options-show");
+    }
+  };
+
   render() {
     return (
       <div className="page">
+        <input type="checkbox" id="check" />
+        <label for="check">
+          <i class="fas fa-bars" id="btn"></i>
+          <i class="fas fa-times" id="cancel"></i>
+        </label>
+        <div class="sidebar" id="left-sidebar">
+          <header>Options</header>
+          <ul>
+            <li
+              onClick={this.dropDownAlgorithmsPressed}
+              disabled={this.state.gridBeingUsed ? true : false}
+            >
+              <a
+                class={`${
+                  this.state.gridBeingUsed
+                    ? "drop-down-algo-running"
+                    : "drop-down"
+                }`}
+              >
+                {this.state.currentAlgo}
+                <span class="fa fa-caret-right expand caret"></span>
+              </a>
+              <ul id="algorithm-options" class="speed-options-dont-show">
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Merge Sort")}
+                >
+                  <a class="drop-down-option">Merge Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Quick Sort")}
+                >
+                  <a class="drop-down-option">Quick Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Insertion Sort")}
+                >
+                  <a class="drop-down-option">Insertion Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Bubble Sort")}
+                >
+                  <a class="drop-down-option">Bubble Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Shell Sort")}
+                >
+                  <a class="drop-down-option">Shell Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Heap Sort")}
+                >
+                  <a class="drop-down-option">Heap Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Radix Sort")}
+                >
+                  <a class="drop-down-option">Radix Sort</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateCurrentAlgo("Bucket Sort")}
+                >
+                  <a class="drop-down-option">Bucket Sort</a>
+                </li>
+              </ul>
+            </li>
+
+            <li
+              onClick={this.dropDownSpeedPressed}
+              disabled={this.state.gridBeingUsed ? true : false}
+            >
+              <a
+                class={`${
+                  this.state.gridBeingUsed
+                    ? "drop-down-algo-running"
+                    : "drop-down"
+                }`}
+              >
+                {this.state.sortSpeedSelected}
+                <span class="fa fa-caret-right expand caret"></span>
+              </a>
+
+              <ul id="speed-options" class="speed-options-dont-show">
+                <li class="item" onClick={() => this.updateSortSpeed("Slow")}>
+                  <a class="drop-down-option">Slow</a>
+                </li>
+                <li
+                  class="item"
+                  onClick={() => this.updateSortSpeed("Regular")}
+                >
+                  <a class="drop-down-option">Regular</a>
+                </li>
+                <li class="item" onClick={() => this.updateSortSpeed("Fast")}>
+                  <a class="drop-down-option">Fast</a>
+                </li>
+              </ul>
+            </li>
+
+            <li
+              class={
+                this.state.gridBeingUsed ? "button-algo-running" : "button"
+              }
+              onClick={this.handleRandomizeClick}
+            >
+              <a>Randomize Elements</a>
+            </li>
+            <li
+              class={
+                this.state.gridBeingUsed ? "button-algo-running" : "button"
+              }
+              onClick={this.reset}
+            >
+              <a>Reset</a>
+            </li>
+            <li>
+              <a>
+                <input
+                  id="sliderNumElements"
+                  type="range"
+                  min="2"
+                  max="96"
+                  className="slider"
+                  value={this.state.numberOfElements}
+                  onChange={this.handleNumElementChange}
+                  onMouseDown={this.changingNumberOfElements}
+                  onMouseUp={this.stoppedChangingNumberOfElements}
+                  disabled={this.state.gridBeingUsed ? true : false}
+                />
+                <label className="minorLabel">
+                  {this.state.numberOfElements}
+                </label>
+              </a>
+            </li>
+            <li
+              onClick={this.sortElements}
+              class={
+                this.state.gridBeingUsed
+                  ? "button-algo-running"
+                  : "start-button"
+              }
+            >
+              <a>Start</a>
+            </li>
+          </ul>
+        </div>
         <div className="top-banner">
           <h1 className="header">Sorting algorithm visualizer</h1>
         </div>
@@ -646,6 +836,12 @@ export default class SortingMain extends Component {
             );
           })}
         </div>
+      </div>
+    );
+  }
+}
+
+/*
         <div className="footer">
           <label className="label">Number of elements:</label>
           <input
@@ -712,7 +908,72 @@ export default class SortingMain extends Component {
             Reset
           </button>
         </div>
-      </div>
-    );
-  }
+
+
+        CSS:
+
+        .button {
+  border-radius: 8px;
+  background: whitesmoke;
+  border: 2px solid darkslategray;
+  color: darkslategray;
+  padding: 10px;
+  margin-left: 15px;
+  font-size: 14px;
+  outline: none;
+  font-weight: bold;
 }
+
+.button:hover {
+  background: lavender;
+}
+
+.dropDownSpeed {
+  border: 2px solid darkslategray;
+  height: 42px;
+  width: 7%;
+  margin-left: 10px;
+  outline: none;
+  font-size: 14px;
+  color: darkslategray;
+  font-weight: bold;
+}
+
+.dropDownSpeed:hover {
+  background: lavender;
+}
+
+.dropDown {
+  border: 2px solid darkslategray;
+  height: 42px;
+  width: 10%;
+  margin-left: 10px;
+  outline: none;
+  font-size: 14px;
+  color: darkslategray;
+  font-weight: bold;
+}
+
+.dropDown:hover {
+  background: lavender;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  display: inline-block;
+  width: 100%;
+  height: 90px;
+  background-color: whitesmoke;
+  text-align: center;
+}
+
+
+.label {
+  text-align: center;
+  font-weight: bold;
+  color: darkslategray;
+  line-height: 90px;
+  margin-left: 15px;
+}
+    */
