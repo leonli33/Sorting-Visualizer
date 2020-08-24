@@ -597,12 +597,12 @@ export default class SortingMain extends Component {
 
   // sorts the elements using the current selected algorithm
   sortElements = () => {
-    document.getElementById("check").checked = false;
     if (
       !this.state.gridBeingUsed &&
       this.state.currentAlgo !== "Algorithms" &&
       this.state.sortSpeedSelected !== "Sorting Speed"
     ) {
+      document.getElementById("check").checked = false;
       this.setState({
         gridBeingUsed: true,
       });
