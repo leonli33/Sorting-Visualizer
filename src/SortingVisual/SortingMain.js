@@ -803,7 +803,9 @@ export default class SortingMain extends Component {
             <li
               onClick={this.sortElements}
               class={
-                this.state.gridBeingUsed
+                this.state.gridBeingUsed ||
+                this.state.currentAlgo === "Algorithms" ||
+                this.state.sortSpeedSelected === "Sorting Speed"
                   ? "button-algo-running"
                   : "start-button"
               }
