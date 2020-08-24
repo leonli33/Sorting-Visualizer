@@ -163,6 +163,7 @@
 
 .item {
   width: 100%;
+  background-color: #1e1f26;
   transition: 0.4s all;
 }
 
